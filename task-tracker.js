@@ -57,10 +57,23 @@ function handleMarkInProgressCommand(args = []) {
         console.error('Ex. task-cli mark-in-progress 1')
         process.exit(1)
     }
+    handleChangeStatusCommand(args, 'in-progress')
+}
+
+function handleMarkDoneCommand(args = []) {
+    if (args.length < 2) {
+        console.error('ERROR: Please specify the task id to mark done')
+        console.error('Ex. task-cli mark-done 1')
+        process.exit(1)
+    }
+    handleChangeStatusCommand(args, 'done')
+}
+
+function handleChangeStatusCommand(args = [], status) {
     const id = parseInt(args[1].trim())
     validateTaskId(id)
     try {
-        const task = markTaskInProgress(id)
+        const task = changeTaskStatus(id, status)
         console.log(`Task "${task.description}" is marked as "${task.status}"`)
     } catch (e) {
         console.error(e.toString())
@@ -114,13 +127,13 @@ function deleteTask(id) {
     return task
 }
 
-function markTaskInProgress(id) {
+function changeTaskStatus(id, status) {
     const tasks = getAllTasks()
     const task = getMatchingTask(tasks, id)
     if (!task) {
         throw new Error(`Task with id = ${id} does not exist`);
     }
-    task.status = 'in-progress'
+    task.status = status
     saveAllTasks(tasks)
     return task
 }
@@ -170,13 +183,15 @@ function main(args = []) {
     }
     const command = args[0].trim()
     if (command === 'add') {
-        handleAddCommand(args);
+        handleAddCommand(args)
     } else if (command === 'update') {
-        handleUpdateCommand(args);
+        handleUpdateCommand(args)
     } else if (command === 'delete') {
         handleDeleteCommand(args)
     } else if (command === 'mark-in-progress') {
-        handleMarkInProgressCommand(args);
+        handleMarkInProgressCommand(args)
+    } else if (command === 'mark-done') {
+        handleMarkDoneCommand(args)
     }
 }
 
