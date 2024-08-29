@@ -80,20 +80,6 @@ function handleChangeStatusCommand(args = [], status) {
     }
 }
 
-function validateTaskDescription(description) {
-    if (description.length == 0) {
-        console.error('ERROR: Task description must not be empty');
-        process.exit(1);
-    }
-}
-
-function validateTaskId(id) {
-    if (isNaN(id)) {
-        console.error('ERROR: Task id must be an integer');
-        process.exit(1);
-    }
-}
-
 function createTask(description = "") {
     const tasks = getAllTasks();
     const task = taskFromIdAndDescription(tasks.nextId, description);
@@ -175,6 +161,20 @@ function taskFromIdAndDescription(id, description) {
         createdAt: now,
         updatedAt: now,
     };
+}
+
+function validateTaskDescription(description) {
+    if (description.length == 0) {
+        console.error('ERROR: Task description must not be empty');
+        process.exit(1);
+    }
+}
+
+function validateTaskId(id) {
+    if (isNaN(id)) {
+        console.error('ERROR: Task id must be an integer');
+        process.exit(1);
+    }
 }
 
 function main(args = []) {
