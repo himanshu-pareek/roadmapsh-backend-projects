@@ -51,6 +51,22 @@ function handleDeleteCommand(args = []) {
     }
 }
 
+function handleMarkInProgressCommand(args = []) {
+    if (args.length < 2) {
+        console.error('ERROR: Please specify the task id to mark in progress')
+        console.error('Ex. task-cli mark-in-progress 1')
+        process.exit(1)
+    }
+    const id = parseInt(args[1].trim())
+    validateTaskId(id)
+    try {
+        const task = markTaskInProgress(id)
+        console.log(`Task "${task.description}" is marked as "${task.status}"`)
+    } catch (e) {
+        console.error(e.toString())
+    }
+}
+
 function validateTaskDescription(description) {
     if (description.length == 0) {
         console.error('ERROR: Task description must not be empty');
@@ -94,6 +110,17 @@ function deleteTask(id) {
         throw new Error(`Task with id = ${id} does not exist`);
     }
     removeMatchingTask(tasks, id)
+    saveAllTasks(tasks)
+    return task
+}
+
+function markTaskInProgress(id) {
+    const tasks = getAllTasks()
+    const task = getMatchingTask(tasks, id)
+    if (!task) {
+        throw new Error(`Task with id = ${id} does not exist`);
+    }
+    task.status = 'in-progress'
     saveAllTasks(tasks)
     return task
 }
@@ -148,6 +175,8 @@ function main(args = []) {
         handleUpdateCommand(args);
     } else if (command === 'delete') {
         handleDeleteCommand(args)
+    } else if (command === 'mark-in-progress') {
+        handleMarkInProgressCommand(args);
     }
 }
 
