@@ -55,7 +55,7 @@ function handleDeleteCommand(args = []) {
     validateTaskId(id)
     try {
         const task = deleteTask(id)
-        console.log(`Task "${task.description}" (id = ${id}, status = ${task.status}) deleted successfully.`)
+        console.log(`Task "${task.description}" (id = ${id}, status = ${STATUS_TO_SYMBOL.get(task.status)} ${STATUS_TO_LABEL.get(task.status)}) deleted successfully.`)
     } catch (e) {
         console.error(e.toString())
     }
@@ -101,7 +101,7 @@ function handleChangeStatusCommand(args = [], status) {
     validateTaskId(id)
     try {
         const task = changeTaskStatus(id, status)
-        console.log(`Task "${task.description}" is marked as "${task.status}"`)
+        console.log(`Task "${task.description}" is marked as "${STATUS_TO_SYMBOL.get(task.status)} ${STATUS_TO_LABEL.get(task.status)}"`)
     } catch (e) {
         console.error(e.toString())
     }
@@ -249,7 +249,8 @@ function getDateToDisplay(date = '') {
 
 function main(args = []) {
     if (args.length == 0) {
-        usage();
+        usage()
+        process.exit(1)
     }
     const command = args[0].trim()
     if (command === 'add') {
@@ -264,10 +265,25 @@ function main(args = []) {
         handleMarkDoneCommand(args)
     } else if (command === 'list') {
         handleListCommand(args)
+    } else if (command === 'help') {
+        usage()
+    } else {
+        usage()
+        process.exit(1)
     }
 }
 
 function usage() {
-    console.error("Usage: todo");
-    process.exit(1);
+    const helpText = `
+Usage: task-cli <command>
+
+command:
+    add <task-description> - To add the given task
+    update <task-id> <new-description> - To update the description of task with given id to given new value 
+    delete <task-id> - To delete the task with given id
+    mark-in-progress <task-id> - To mark the task with given id in progress
+    mark-done <task-id> - To mark the task with given id done
+    list - To list all the tasks
+    list <status> - To list all the tasks with given status (todo / in-progress / done)`
+    console.log(helpText);
 }
