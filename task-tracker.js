@@ -3,12 +3,12 @@ const fs = require('fs')
 const FILE_NAME = "tasks.json"
 
 const STATUS_TO_LABEL = new Map()
-STATUS_TO_LABEL.set('not-started', 'Not started')
+STATUS_TO_LABEL.set('todo', 'Todo')
 STATUS_TO_LABEL.set('in-progress', 'In progress')
 STATUS_TO_LABEL.set('done', 'Done')
 
 const STATUS_TO_SYMBOL = new Map()
-STATUS_TO_SYMBOL.set('not-started', '😊')
+STATUS_TO_SYMBOL.set('todo', '😊')
 STATUS_TO_SYMBOL.set('in-progress', '⏳')
 STATUS_TO_SYMBOL.set('done', '✅')
 
@@ -195,7 +195,7 @@ function taskFromIdAndDescription(id, description) {
     return {
         id,
         description,
-        status: 'not-started',
+        status: 'todo',
         createdAt: now,
         updatedAt: now,
     };
