@@ -79,32 +79,21 @@ function handleMarkDoneCommand(args = []) {
     handleChangeStatusCommand(args, 'done')
 }
 
-function handleListCommand() {
-    const tasks = getAllTasks()
-    let legendText = ''
-    STATUS_TO_SYMBOL.forEach((value, key) => {
-        legendText += `${value} ${STATUS_TO_LABEL.get(key)}  `
-    })
-    console.log(`Here are all the tasks (${legendText})\n`)
-    tasks.items.map(getTaskToDisplay)
-        .forEach(displayTask)
-}
-
-function displayTask(task) {
-    console.log(`${task.status} ${task.description} (ID: ${task.id}, Last updated: ${task.updatedAt})`)
-}
-
-function getTaskToDisplay(task = { id: 1, description: '', status: '', createdAt: new Date(), updatedAt: new Date() }) {
-    return {
-        ...task,
-        status: STATUS_TO_SYMBOL.get(task.status),
-        createdAt: getDateToDisplay(task.createdAt),
-        updatedAt: getDateToDisplay(task.updatedAt)
+function handleListCommand(args = []) {
+    if (args.length > 1) {
+        handleListByStatusCommand(args[1].trim())
+        return
     }
+    displayAllTasks()
 }
 
-function getDateToDisplay(date = '') {
-    return new Date(date).toUTCString()
+function handleListByStatusCommand(status = '') {
+    if (!STATUS_TO_LABEL.has(status)) {
+        console.error('ERROR: Invalid task status: ' + status)
+        console.error(`VALID STATUS: todo / in-progress / done`)
+        process.exit(1)
+    }
+    displayAllTasksByStatus(status)
 }
 
 function handleChangeStatusCommand(args = [], status) {
@@ -162,6 +151,24 @@ function changeTaskStatus(id, status) {
     return task
 }
 
+function displayAllTasks() {
+    const tasks = getAllTasks()
+    let legendText = ''
+    STATUS_TO_SYMBOL.forEach((value, key) => {
+        legendText += `${value} ${STATUS_TO_LABEL.get(key)}  `
+    })
+    console.log(`Here are all the tasks (${legendText})\n`)
+    tasks.items.map(getTaskToDisplay)
+        .forEach(displayTask)
+}
+
+function displayAllTasksByStatus(status = '') {
+    console.log(`Here are all ${STATUS_TO_SYMBOL.get(status)} ${STATUS_TO_LABEL.get(status)} tasks\n`)
+    getAllTasksByStatus(status)
+        .map(getTaskToDisplay)
+        .forEach(displayTaskWithoutStatus)
+}
+
 function getMatchingTask(tasks, id) {
     for (let task of tasks.items) {
         if (task.id === id) {
@@ -184,6 +191,10 @@ function getAllTasks() {
         nextId: 1,
         items: []
     };
+}
+
+function getAllTasksByStatus(status = '') {
+    return getAllTasks().items.filter(task => task.status === status)
 }
 
 function saveAllTasks(tasks) {
@@ -215,6 +226,27 @@ function validateTaskId(id) {
     }
 }
 
+function displayTask(task) {
+    console.log(`${task.status} ${task.description} (ID: ${task.id}, Last updated: ${task.updatedAt})`)
+}
+
+function displayTaskWithoutStatus(task) {
+    console.log(`${task.description} (ID: ${task.id}, Last updated: ${task.updatedAt})`)
+}
+
+function getTaskToDisplay(task = { id: 1, description: '', status: '', createdAt: new Date(), updatedAt: new Date() }) {
+    return {
+        ...task,
+        status: STATUS_TO_SYMBOL.get(task.status),
+        createdAt: getDateToDisplay(task.createdAt),
+        updatedAt: getDateToDisplay(task.updatedAt)
+    }
+}
+
+function getDateToDisplay(date = '') {
+    return new Date(date).toUTCString()
+}
+
 function main(args = []) {
     if (args.length == 0) {
         usage();
@@ -231,7 +263,7 @@ function main(args = []) {
     } else if (command === 'mark-done') {
         handleMarkDoneCommand(args)
     } else if (command === 'list') {
-        handleListCommand()
+        handleListCommand(args)
     }
 }
 
