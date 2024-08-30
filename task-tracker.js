@@ -2,6 +2,16 @@ const fs = require('fs')
 
 const FILE_NAME = "tasks.json"
 
+const STATUS_TO_LABEL = new Map()
+STATUS_TO_LABEL.set('not-started', 'Not started')
+STATUS_TO_LABEL.set('in-progress', 'In progress')
+STATUS_TO_LABEL.set('done', 'Done')
+
+const STATUS_TO_SYMBOL = new Map()
+STATUS_TO_SYMBOL.set('not-started', '😊')
+STATUS_TO_SYMBOL.set('in-progress', '⏳')
+STATUS_TO_SYMBOL.set('done', '✅')
+
 main(process.argv.splice(2))
 
 function handleAddCommand(args = []) {
@@ -67,6 +77,34 @@ function handleMarkDoneCommand(args = []) {
         process.exit(1)
     }
     handleChangeStatusCommand(args, 'done')
+}
+
+function handleListCommand() {
+    const tasks = getAllTasks()
+    let legendText = ''
+    STATUS_TO_SYMBOL.forEach((value, key) => {
+        legendText += `${value} ${STATUS_TO_LABEL.get(key)}  `
+    })
+    console.log(`Here are all the tasks (${legendText})\n`)
+    tasks.items.map(getTaskToDisplay)
+        .forEach(displayTask)
+}
+
+function displayTask(task) {
+    console.log(`${task.status} ${task.description} (ID: ${task.id}, Last updated: ${task.updatedAt})`)
+}
+
+function getTaskToDisplay(task = { id: 1, description: '', status: '', createdAt: new Date(), updatedAt: new Date() }) {
+    return {
+        ...task,
+        status: STATUS_TO_SYMBOL.get(task.status),
+        createdAt: getDateToDisplay(task.createdAt),
+        updatedAt: getDateToDisplay(task.updatedAt)
+    }
+}
+
+function getDateToDisplay(date = '') {
+    return new Date(date).toUTCString()
 }
 
 function handleChangeStatusCommand(args = [], status) {
@@ -192,6 +230,8 @@ function main(args = []) {
         handleMarkInProgressCommand(args)
     } else if (command === 'mark-done') {
         handleMarkDoneCommand(args)
+    } else if (command === 'list') {
+        handleListCommand()
     }
 }
 
