@@ -1,0 +1,11 @@
+usage() {
+	echo "Usage: github-activity <username>"
+	exit 1
+}
+
+if [ "$#" -eq 1 ]; then
+	node github-activity.js $1
+else
+	usage
+fi
+
