@@ -1,5 +1,23 @@
-function handleUsername(username = '') {
-    console.log('Get github activity for username ' + username)
+const fs = require('fs')
+
+const ACTIVITY_URL = 'https://api.github.com/users/{USERNAME}/events'
+
+async function handleUsername (username = '') {
+    console.log(`Getting github activity for ${username} ...`)
+    const activityUrl = getActivityUrl(username)
+    const activities = await getActivities(activityUrl)
+}
+
+function getActivityUrl(username = '') {
+    return ACTIVITY_URL.replace('{USERNAME}', username)
+}
+
+async function getActivities(activityUrl = '') {
+    console.log(`Sending request to ${activityUrl} ...`)
+    const res = await fetch(activityUrl)
+    const json = await res.json()
+    console.log('Got response. Parsing response...')
+    fs.writeFileSync("actitities.json", JSON.stringify(json, undefined, 4))
 }
 
 function main(args = []) {
