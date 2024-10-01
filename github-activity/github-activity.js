@@ -1,5 +1,3 @@
-const fs = require('fs')
-
 const ACTIVITY_URL = 'https://api.github.com/users/{USERNAME}/events'
 
 async function handleUsername (username = '') {
@@ -37,6 +35,8 @@ function getMessage(event = { type: '' }) {
             return getMessageForDeleteEvent(event)
         case 'ForkEvent':
             return getMessageForForkEvent(event)
+        case 'GollumEvent':
+            return getMessageForGollumEvent(event)
         default:
             return null
     }
@@ -72,6 +72,31 @@ function getMessageForDeleteEvent(event = { payload: { ref: '', ref_type: '' } }
 function getMessageForForkEvent(event) {
     if (event?.repo?.name && event?.payload?.forkee?.name) {
         return `Forked repository ${event.repo.name} to ${event.payload.forkee.name}`
+    }
+    return null
+}
+
+https://docs.github.com/en/rest/using-the-rest-api/github-event-types?apiVersion=2022-11-28#gollumevent
+function getMessageForGollumEvent(event) {
+    if (event?.repo?.name && event?.payload?.pages) {
+        const pages = event.payload.pages
+        const created = pages.findIndex(page => page.action === 'created') != -1
+        const edited = pages.findIndex(page => page.action === 'edited') != -1
+        let messagePrefix = null
+        if (created && edited) {
+            messagePrefix = 'Created / edited'
+        } else if (created) {
+            messagePrefix = 'Created'
+        } else if (edited) {
+            messagePrefix = 'Edited'
+        }
+        if (!messagePrefix) {
+            return null
+        }
+        if (pages.length === 1) {
+            return `${messagePrefix} wiki page ${pages[0].page_name} in ${event.repo.name}`
+        }
+        return `${messagePrefix} ${pages.length} wiki pages in ${event.repo.name}`
     }
     return null
 }
