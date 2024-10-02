@@ -37,6 +37,8 @@ function getMessage(event = { type: '' }) {
             return getMessageForForkEvent(event)
         case 'GollumEvent':
             return getMessageForGollumEvent(event)
+        case 'IssueCommentEvent':
+            return getMessageForIssueCommentEvent(event)
         default:
             return null
     }
@@ -76,7 +78,7 @@ function getMessageForForkEvent(event) {
     return null
 }
 
-https://docs.github.com/en/rest/using-the-rest-api/github-event-types?apiVersion=2022-11-28#gollumevent
+// https://docs.github.com/en/rest/using-the-rest-api/github-event-types?apiVersion=2022-11-28#gollumevent
 function getMessageForGollumEvent(event) {
     if (event?.repo?.name && event?.payload?.pages) {
         const pages = event.payload.pages
@@ -97,6 +99,29 @@ function getMessageForGollumEvent(event) {
             return `${messagePrefix} wiki page ${pages[0].page_name} in ${event.repo.name}`
         }
         return `${messagePrefix} ${pages.length} wiki pages in ${event.repo.name}`
+    }
+    return null
+}
+
+// https://docs.github.com/en/rest/using-the-rest-api/github-event-types?apiVersion=2022-11-28#issuecommentevent
+function getMessageForIssueCommentEvent(event) {
+    const action = event?.payload?.action
+    let actionMessage = null
+    switch(action) {
+        case 'created':
+            actionMessage = 'Created'
+            break
+        case 'edited':
+            actionMessage = 'Edited'
+            break
+        case 'deleted':
+            actionMessage = 'Deleted'
+            break
+    }
+    const issueNumber = event?.payload?.issue?.number
+    const repoName = event?.repo?.name
+    if (actionMessage && issueNumber && repoName) {
+        return `${actionMessage} a comment on #${issueNumber} in ${repoName}`
     }
     return null
 }
