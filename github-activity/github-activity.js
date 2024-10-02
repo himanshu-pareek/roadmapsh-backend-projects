@@ -2,6 +2,7 @@ const fs = require('fs')
 const { getMessageForIssuesEvent } = require('./issue-event-util')
 const { getMessageForMemberEvent } = require('./member-event-util')
 const { getMessageForPublicEvent } = require('./public-event-util')
+const { getMessageForPullRequestEvent } = require('./pull-request-event-util')
 const ACTIVITY_URL = 'https://api.github.com/users/{USERNAME}/events'
 
 async function handleUsername(username = '') {
@@ -49,6 +50,8 @@ function getMessage(event = { type: '' }) {
             return getMessageForMemberEvent(event)
         case 'PublicEvent':
             return getMessageForPublicEvent(event)
+        case 'PullRequestEvent':
+            return getMessageForPullRequestEvent(event)
         default:
             return null
     }
