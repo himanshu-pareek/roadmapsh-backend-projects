@@ -1,6 +1,8 @@
+const fs = require('fs')
+const { getMessageForIssuesEvent } = require('./issue-event-util')
 const ACTIVITY_URL = 'https://api.github.com/users/{USERNAME}/events'
 
-async function handleUsername (username = '') {
+async function handleUsername(username = '') {
     console.log(`Getting github activity for ${username} ...`)
     const activityUrl = getActivityUrl(username)
     try {
@@ -28,7 +30,7 @@ async function getActivities(activityUrl = '') {
 }
 
 function getMessage(event = { type: '' }) {
-    switch(event.type) {
+    switch (event.type) {
         case 'CreateEvent':
             return getMessageForCreateEvent(event)
         case 'DeleteEvent':
@@ -39,6 +41,8 @@ function getMessage(event = { type: '' }) {
             return getMessageForGollumEvent(event)
         case 'IssueCommentEvent':
             return getMessageForIssueCommentEvent(event)
+        case 'IssuesEvent':
+            return getMessageForIssuesEvent(event)
         default:
             return null
     }
@@ -60,7 +64,7 @@ function getMessageForCreateEvent(event = { payload: { ref: '', ref_type: '' } }
 
 // https://docs.github.com/en/rest/using-the-rest-api/github-event-types?apiVersion=2022-11-28#deleteevent
 function getMessageForDeleteEvent(event = { payload: { ref: '', ref_type: '' } }) {
-    switch(event?.payload?.ref_type) {
+    switch (event?.payload?.ref_type) {
         case 'branch':
             return getMessageForBranchDeleteEvent(event)
         case 'tag':
@@ -107,7 +111,7 @@ function getMessageForGollumEvent(event) {
 function getMessageForIssueCommentEvent(event) {
     const action = event?.payload?.action
     let actionMessage = null
-    switch(action) {
+    switch (action) {
         case 'created':
             actionMessage = 'Created'
             break
