@@ -1,8 +1,10 @@
+const { getRepositoryNameToDisplay } = require("./repo-util")
+
 /**
  * Issue Event - https://docs.github.com/en/rest/using-the-rest-api/github-event-types?apiVersion=2022-11-28#issuesevent
  */
 module.exports.getMessageForIssuesEvent = (event) => {
-    const repoName = event?.repo?.name
+    const repoName = getRepositoryNameToDisplay(event)
     const issueNumber = event?.payload?.issue?.number
     const issueTitle = event?.payload?.issue?.title || 'NO TITLE'
     switch (event?.payload?.action) {

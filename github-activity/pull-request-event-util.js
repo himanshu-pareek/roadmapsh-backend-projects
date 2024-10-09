@@ -1,6 +1,8 @@
+const { getRepositoryNameToDisplay } = require("./repo-util")
+
 // https://docs.github.com/en/rest/using-the-rest-api/github-event-types?apiVersion=2022-11-28#pullrequestevent
 module.exports.getMessageForPullRequestEvent = event => {
-    const repositoryName = event?.repo?.name
+    const repositoryName = getRepositoryNameToDisplay(event)
     const pullRequest = event?.payload?.pull_request
     switch (event?.payload?.action) {
         case 'opened':

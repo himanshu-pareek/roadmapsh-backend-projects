@@ -4,6 +4,7 @@ const { getMessageForMemberEvent } = require('./member-event-util')
 const { getMessageForPublicEvent } = require('./public-event-util')
 const { getMessageForPullRequestEvent } = require('./pull-request-event-util')
 const { getMessageForPushEvent } = require('./push-event-util')
+const { getRepositoryNameToDisplay } = require('./repo-util')
 const ACTIVITY_URL = 'https://api.github.com/users/{USERNAME}/events'
 
 async function handleUsername(username = '') {
@@ -24,14 +25,13 @@ function getActivityUrl(username = '') {
 }
 
 async function getActivities(activityUrl = '') {
-    // console.log(`Sending request to ${activityUrl} ...`)
-    // const res = await fetch(activityUrl)
-    // if (res.status == 404) {
-    //     throw new Error('User not found. Try with another username.')
-    // }
-    // console.log('Got response. Parsing response...\n')
-    // return res.json()
-    return JSON.parse(fs.readFileSync('activities.json').toString());
+    console.log(`Sending request to ${activityUrl} ...`)
+    const res = await fetch(activityUrl)
+    if (res.status == 404) {
+        throw new Error('User not found. Try with another username.')
+    }
+    console.log('Got response. Parsing response...\n')
+    return res.json()
 }
 
 function getMessage(event = { type: '' }) {
@@ -136,7 +136,7 @@ function getMessageForIssueCommentEvent(event) {
             break
     }
     const issueNumber = event?.payload?.issue?.number
-    const repoName = event?.repo?.name
+    const repoName = getRepositoryNameToDisplay(event)
     if (actionMessage && issueNumber && repoName) {
         return `${actionMessage} a comment on #${issueNumber} in ${repoName}`
     }
@@ -144,36 +144,38 @@ function getMessageForIssueCommentEvent(event) {
 }
 
 function getMessageForRepositoryCreateEvent(event = { repo: { name: '' } }) {
-    if (!event?.repo?.name) {
-        return null;
+    const repositoryName = getRepositoryNameToDisplay(event)
+    if (repositoryName) {
+        return `Created repository ${repositoryName}`
     }
-    return `Created repository ${event.repo.name}`
 }
 
 function getMessageForBranchCreateEvent(event = { repo: { name: '' }, payload: { ref: '' } }) {
-    if (event?.repo?.name && event?.payload?.ref) {
-        return `Created branch ${event.payload.ref} inside repository ${event.repo.name}`
+    const repositoryName = getRepositoryNameToDisplay(event)
+    if (repositoryName && event?.payload?.ref) {
+        return `Created branch ${event.payload.ref} inside repository ${repositoryName}`
     }
-    return null
 }
 
 function getMessageForTagCreateEvent(event = { repo: { name: '' }, payload: { ref: '' } }) {
-    if (event?.repo?.name && event?.payload?.ref) {
-        return `Created tag ${event.payload.ref} inside repository ${event.repo.name}`
+    const repositoryName = getRepositoryNameToDisplay(event)
+    if (repositoryName && event?.payload?.ref) {
+        return `Created tag ${event.payload.ref} inside repository ${repositoryName}`
     }
-    return null
 }
 
 function getMessageForBranchDeleteEvent(event = { repo: { name: '' }, payload: { ref: '' } }) {
-    if (event?.repo?.name && event?.payload?.ref) {
-        return `Deleted branch ${event.payload.ref} from repository ${event.repo.name}`
+    const repositoryName = getRepositoryNameToDisplay(event)
+    if (repositoryName && event?.payload?.ref) {
+        return `Deleted branch ${event.payload.ref} from repository ${repositoryName}`
     }
     return null
 }
 
 function getMessageForTagDeleteEvent(event = { repo: { name: '' }, payload: { ref: '' } }) {
-    if (event?.repo?.name && event?.payload?.ref) {
-        return `Deleted tag ${event.payload.ref} from repository ${event.repo.name}`
+    const repositoryName = getRepositoryNameToDisplay(event)
+    if (repositoryName && event?.payload?.ref) {
+        return `Deleted tag ${event.payload.ref} from repository ${repositoryName}`
     }
     return null
 }
