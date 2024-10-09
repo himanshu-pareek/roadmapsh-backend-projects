@@ -3,6 +3,7 @@ const { getMessageForIssuesEvent } = require('./issue-event-util')
 const { getMessageForMemberEvent } = require('./member-event-util')
 const { getMessageForPublicEvent } = require('./public-event-util')
 const { getMessageForPullRequestEvent } = require('./pull-request-event-util')
+const { getMessageForPushEvent } = require('./push-event-util')
 const ACTIVITY_URL = 'https://api.github.com/users/{USERNAME}/events'
 
 async function handleUsername(username = '') {
@@ -23,13 +24,14 @@ function getActivityUrl(username = '') {
 }
 
 async function getActivities(activityUrl = '') {
-    console.log(`Sending request to ${activityUrl} ...`)
-    const res = await fetch(activityUrl)
-    if (res.status == 404) {
-        throw new Error('User not found. Try with another username.')
-    }
-    console.log('Got response. Parsing response...\n')
-    return res.json()
+    // console.log(`Sending request to ${activityUrl} ...`)
+    // const res = await fetch(activityUrl)
+    // if (res.status == 404) {
+    //     throw new Error('User not found. Try with another username.')
+    // }
+    // console.log('Got response. Parsing response...\n')
+    // return res.json()
+    return JSON.parse(fs.readFileSync('activities.json').toString());
 }
 
 function getMessage(event = { type: '' }) {
@@ -52,6 +54,8 @@ function getMessage(event = { type: '' }) {
             return getMessageForPublicEvent(event)
         case 'PullRequestEvent':
             return getMessageForPullRequestEvent(event)
+        case 'PushEvent':
+            return getMessageForPushEvent(event)
         default:
             return null
     }

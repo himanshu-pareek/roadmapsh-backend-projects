@@ -11,6 +11,8 @@ module.exports.getMessageForPullRequestEvent = event => {
             return getMessageForPullRequestClosedEvent(repositoryName, pullRequest)
         case 'reopened':
             return getMessageForPullRequestReopenedEvent(repositoryName, pullRequest)
+        case 'assigned':
+            return getMessageForPullRequestAssignedEvent(repositoryName, pullRequest)
     }
 }
 
@@ -50,4 +52,11 @@ function getMessageForPullRequestReopenedEvent(repositoryName, pullRequest) {
     }
 }
 
-
+function getMessageForPullRequestAssignedEvent(repositoryName, pullRequest) {
+    if (repositoryName && pullRequest?.assignees) {
+        const assigneesToDisplay = pullRequest.assignees.length == 1 ?
+            pullRequest.assignees[0].login :
+            `${pullRequest.assignees.length} persons`;
+        return `Assigned ${assigneesToDisplay} to PR #${pullRequest.number} '${pullRequest.title}'`
+    }
+}
