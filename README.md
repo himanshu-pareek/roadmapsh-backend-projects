@@ -8,10 +8,12 @@ In order to run any project, go to corresponding directory and follow the instru
 
 1. Task Tracker
 
-    Project URL - https://roadmap.sh/projects/task-tracker\
+    Project URL - https://roadmap.sh/projects/task-tracker
+   
     Github URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/task-tracker
 
-2. GitHub User Activity
+3. GitHub User Activity
 
-    Project URL - https://roadmap.sh/projects/github-user-activity\
+    Project URL - https://roadmap.sh/projects/github-user-activity
+   
     Github URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/github-activity
