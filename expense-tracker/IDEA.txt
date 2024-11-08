@@ -1,0 +1,100 @@
+Storing data
+
+current direcctory
+      |
+      |
+       ---- .data
+              |
+              |
+               --------- expenses
+              |             |
+              |             |
+              |              --------- 1.expense
+              |
+              |
+               --------- summaries
+                            |
+                            |
+                             --------- 2024-10
+                                          |
+                                          |
+                                           ------- food.spending
+                                          |
+                                           ------- entertainment.spending
+                                          |
+                                           ------- grocery.spending
+              |
+              |
+               --------- budget
+                            |
+                            |
+                             --------- 2024-10.budget
+                            |
+                             --------- 2024-11.budget
+
+Examples
+---------
+
+|| 1.expense ||
+
+2024-10-23
+food
+Went for birthday party
+100
+
+---
+
+|| food.spending ||
+
+100
+
+---
+
+|| 2024-10.budget ||
+
+200
+
+---
+
+Adding expense
+
+  1. Get the date in YYYY-MM-DD format.
+  2. Get the month in YYYY-MM format.
+  3. Generate id for expense.
+  4. Create file `.data/expenses/${id}.expense` with the following content:
+    data
+    category
+    description
+    amount
+  5. Read file `.data/summaries/${month}/${category}.spending` and store in previousSpending (0 if not exists).
+  6. Update the above file with content previousSpending + amount.
+  7. display warning if budget is exhausted
+    A) Read all files inside `.data/summaries/${month}` dirctory.
+    B) Add everything
+    C) Compare it with `.data/budgets/${mongh}.budget` file's content.
+    D) Display warning if required.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
