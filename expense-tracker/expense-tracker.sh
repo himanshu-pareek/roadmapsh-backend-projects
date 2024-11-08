@@ -171,6 +171,21 @@ delete() {
   echo "🗑️  Deleted expense with id ${id}"
 }
 
+function list() {
+    echo "List of expenses"
+    echo ""
+    for file in "${EXPENSES_DIR}/"*.expense; do
+        expense_file=$(basename "${file}")
+        id=`echo ${expense_file} | cut -d "." -f 1`
+        expense_date=`head -n 1 "${file}"`
+        category=`head -n 2 "${file}" | tail -n 1`
+        description=`head -n 3 "${file}" | tail -n 1`
+        amount=`head -n 4 "${file}" | tail -n 1`
+        date_to_display=$(reverse_date "${expense_date}")
+        echo "💰$amount [$id] $description (#$category) 🗓️ $date_to_display"
+    done
+}
+
 summary() {
   echo "Summary"
 }
@@ -183,6 +198,13 @@ dateToYearMonth() {
   year=`echo $1 | cut -d "-" -f 1`
   month=`echo $1 | cut -d "-" -f 2`
   echo "$year-$month"
+}
+
+function reverse_date() {
+    year=`echo $1 | cut -d "-" -f 1`
+    month=`echo $1 | cut -d "-" -f 2`
+    day=`echo $1 | cut -d "-" -f 3`
+    echo "$day-$month-$year"
 }
 
 "$@"
