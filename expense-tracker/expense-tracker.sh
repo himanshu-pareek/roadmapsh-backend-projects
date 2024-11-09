@@ -324,6 +324,9 @@ function summary() {
         -type f \
         -print0
     )
+    
+    # 4. Remove the aggregate summary directory
+    rm -rf "${summary_aggregate_dir}"
 }
 
 function dateToYearMonth() {
