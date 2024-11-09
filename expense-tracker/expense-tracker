@@ -8,8 +8,8 @@ function usage() {
     echo "$0 command (see below for different commands)"
     echo "add - to add a new expense"
     echo "  Usage - $0 add -d/--description <description> -a/--amount <amount> [-c/--category <category>, default=-]"
-    echo "  Example - $0 add -d Birthday party -a 1000 -d party"
-    echo "            $0 add --description Movie tickets --amount 500"
+    echo "  Example - $0 add -d 'Birthday party' -a 1000 -d party"
+    echo "            $0 add --description 'Movie tickets' --amount 500"
     echo ""
   
     echo "delete - to delete an existing expense using id"
