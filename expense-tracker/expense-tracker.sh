@@ -5,7 +5,29 @@ set -e
 cd $(dirname $0)
 
 function usage() {
-  echo "Usage goes here..."
+    echo "$0 command (see below for different commands)"
+    echo "add - to add a new expense"
+    echo "  Usage - $0 add -d/--description <description> -a/--amount <amount> [-c/--category <category>, default=-]"
+    echo "  Example - $0 add -d Birthday party -a 1000 -d party"
+    echo "            $0 add --description Movie tickets --amount 500"
+    echo ""
+  
+    echo "delete - to delete an existing expense using id"
+    echo "  Usage - $0 delete --id <id>"
+    echo "  Example - $0 delete --id 1"
+    echo ""
+    
+    echo "list - to list all expenses"
+    echo "  Usage - $0 list"
+    echo ""
+    
+    echo "summary - to view summary of expenses"
+    echo "  Usage - $0 [-y/--year <year>] [-m/--month <month>]"
+    echo "  Example - $0 summary # summary of all of the expenses"
+    echo "            $0 summary --year 2024 # summary of all of the expenses for year 2024"
+    echo "            $0 summary -y 2023 -m 11 # summary of all of the expenses for November, 2023"
+    echo "            $0 summary --month 8 # summary of all of the expenses for month fo August of current year"
+    echo ""
   if [[ $1 == "success" ]]; then
     exit 0
   else
@@ -18,7 +40,7 @@ EXPENSES_DIR="${DATA_DIR}/expenses"
 SUMMARIES_DIR="${DATA_DIR}/summaries"
 BUDGETS_DIR="${DATA_DIR}/budgets"
 
-add() {
+function add() {
   category="-"
   amountProvided=0
   descriptionProvided=0
@@ -118,7 +140,7 @@ add() {
   echo "✅  Added expense with ID - ${id}"
 }
 
-delete() {
+function delete() {
   id="-"
   idProvided=0
   while [[ $# > 0 ]]; do
@@ -304,10 +326,6 @@ function summary() {
     )
 }
 
-budget() {
-  echo "Budget"
-}
-
 function dateToYearMonth() {
   year=`echo $1 | cut -d "-" -f 1`
   month=`echo $1 | cut -d "-" -f 2`
@@ -319,6 +337,10 @@ function reverse_date() {
     month=`echo $1 | cut -d "-" -f 2`
     day=`echo $1 | cut -d "-" -f 3`
     echo "$day-$month-$year"
+}
+
+function help() {
+    usage success
 }
 
 "$@"
