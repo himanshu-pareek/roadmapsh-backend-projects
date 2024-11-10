@@ -56,6 +56,14 @@ Run the following command to see the list of all of the expenses. The list conta
 ./expense-tracker list
 ```
 
+If you want the list of all the expenses for a particular category, then run the following command:
+
+```shell
+./expense-tracker list --category food
+
+./expense-tracker list -c travel
+```
+
 ### Deleting expense
 
 Run the following command in order to delete an expense by specifying correct `id` of the expense.

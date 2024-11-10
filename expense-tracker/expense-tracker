@@ -18,7 +18,9 @@ function usage() {
     echo ""
     
     echo "list - to list all expenses"
-    echo "  Usage - $0 list"
+    echo "  Usage - $0 list [--category/-c <category>]"
+    echo "  Example - $0 list # list of all the expenses"
+    echo "            $0 list --category food # list of all the expenses for category food"
     echo ""
     
     echo "summary - to view summary of expenses"
@@ -199,7 +201,32 @@ function delete() {
 }
 
 function list() {
-    echo "List of expenses"
+  categoryForFilter=""
+  categoryProvided=0
+  while [[ $# > 0 ]]; do
+    case "$1" in
+      "--category")
+        categoryForFilter="$2"
+        categoryProvided=1
+        shift
+        shift
+        ;;
+      "-c")
+        categoryForFilter="$2"
+        categoryProvided=1
+        shift
+        shift
+        ;;
+      *)
+        echo "Unrecognized argument: $1"
+        usage
+    esac
+  done
+  if [[ "$categoryProvided" == "1" ]]; then
+    echo "List of expenses for category $categoryForFilter"
+  else
+    echo "List of all expenses"
+  fi
     echo ""
     for file in "${EXPENSES_DIR}/"*.expense; do
         expense_file=$(basename "${file}")
@@ -209,6 +236,14 @@ function list() {
         description=`head -n 3 "${file}" | tail -n 1`
         amount=`head -n 4 "${file}" | tail -n 1`
         date_to_display=$(reverse_date "${expense_date}")
+
+        # Filter based on category (if provided)
+        if [[ "$categoryProvided" == "1" ]]; then
+          if [[ "$category" != "$categoryForFilter" ]]; then
+            continue
+          fi
+        fi
+
         echo "💰$amount [$id] $description (#$category) 🗓️ $date_to_display"
     done
 }
