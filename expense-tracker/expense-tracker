@@ -5,31 +5,31 @@ set -e
 cd $(dirname $0)
 
 function usage() {
-    echo "$0 command (see below for different commands)"
-    echo "add - to add a new expense"
-    echo "  Usage - $0 add -d/--description <description> -a/--amount <amount> [-c/--category <category>, default=-]"
-    echo "  Example - $0 add -d 'Birthday party' -a 1000 -d party"
-    echo "            $0 add --description 'Movie tickets' --amount 500"
-    echo ""
-  
-    echo "delete - to delete an existing expense using id"
-    echo "  Usage - $0 delete --id <id>"
-    echo "  Example - $0 delete --id 1"
-    echo ""
-    
-    echo "list - to list all expenses"
-    echo "  Usage - $0 list [--category/-c <category>]"
-    echo "  Example - $0 list # list of all the expenses"
-    echo "            $0 list --category food # list of all the expenses for category food"
-    echo ""
-    
-    echo "summary - to view summary of expenses"
-    echo "  Usage - $0 [-y/--year <year>] [-m/--month <month>]"
-    echo "  Example - $0 summary # summary of all of the expenses"
-    echo "            $0 summary --year 2024 # summary of all of the expenses for year 2024"
-    echo "            $0 summary -y 2023 -m 11 # summary of all of the expenses for November, 2023"
-    echo "            $0 summary --month 8 # summary of all of the expenses for month fo August of current year"
-    echo ""
+  echo "$0 command (see below for different commands)"
+  echo "add - to add a new expense"
+  echo "  Usage - $0 add -d/--description <description> -a/--amount <amount> [-c/--category <category>, default=-]"
+  echo "  Example - $0 add -d 'Birthday party' -a 1000 -d party"
+  echo "            $0 add --description 'Movie tickets' --amount 500"
+  echo ""
+
+  echo "delete - to delete an existing expense using id"
+  echo "  Usage - $0 delete --id <id>"
+  echo "  Example - $0 delete --id 1"
+  echo ""
+
+  echo "list - to list all expenses"
+  echo "  Usage - $0 list [--category/-c <category>]"
+  echo "  Example - $0 list # list of all the expenses"
+  echo "            $0 list --category food # list of all the expenses for category food"
+  echo ""
+
+  echo "summary - to view summary of expenses"
+  echo "  Usage - $0 [-y/--year <year>] [-m/--month <month>]"
+  echo "  Example - $0 summary # summary of all of the expenses"
+  echo "            $0 summary --year 2024 # summary of all of the expenses for year 2024"
+  echo "            $0 summary -y 2023 -m 11 # summary of all of the expenses for November, 2023"
+  echo "            $0 summary --month 8 # summary of all of the expenses for month fo August of current year"
+  echo ""
   if [[ $1 == "success" ]]; then
     exit 0
   else
@@ -161,11 +161,11 @@ function delete() {
         usage
     esac
   done
-  
-    if [[ idProvided -eq 0 ]]; then
-        usage
-    fi
-    
+
+  if [[ idProvided -eq 0 ]]; then
+    usage
+  fi
+
   echo "Deleting expense with id - ${id}"
   expense_file="${EXPENSES_DIR}/${id}.expense"
   # 1. Check if the expense file exists
@@ -227,15 +227,15 @@ function list() {
   else
     echo "List of all expenses"
   fi
-    echo ""
-    for file in "${EXPENSES_DIR}/"*.expense; do
-        expense_file=$(basename "${file}")
-        id=`echo ${expense_file} | cut -d "." -f 1`
-        expense_date=`head -n 1 "${file}"`
-        category=`head -n 2 "${file}" | tail -n 1`
-        description=`head -n 3 "${file}" | tail -n 1`
-        amount=`head -n 4 "${file}" | tail -n 1`
-        date_to_display=$(reverse_date "${expense_date}")
+  echo ""
+  for file in "${EXPENSES_DIR}/"*.expense; do
+    expense_file=$(basename "${file}")
+    id=`echo ${expense_file} | cut -d "." -f 1`
+    expense_date=`head -n 1 "${file}"`
+    category=`head -n 2 "${file}" | tail -n 1`
+    description=`head -n 3 "${file}" | tail -n 1`
+    amount=`head -n 4 "${file}" | tail -n 1`
+    date_to_display=$(reverse_date "${expense_date}")
 
         # Filter based on category (if provided)
         if [[ "$categoryProvided" == "1" ]]; then
@@ -245,141 +245,141 @@ function list() {
         fi
 
         echo "💰$amount [$id] $description (#$category) 🗓️ $date_to_display"
-    done
-}
+      done
+    }
 
-function summary() {
-    year="*"
-    month="*"
-    while [[ $# > 0 ]]; do
+    function summary() {
+      year="*"
+      month="*"
+      while [[ $# > 0 ]]; do
         case "$1" in
-            "--year")
-                year="$2"
-                shift
-                shift
-                ;;
-            "-y")
-                year="$2"
-                shift
-                shift
-                ;;
-            "--month")
-                month="$2"
-                shift
-                shift
-                ;;
-            "-m")
-                month="$2"
-                shift
-                shift
-                ;;
-            *)
-                echo "Unrecognized argument: $1"
-                usage
+          "--year")
+            year="$2"
+            shift
+            shift
+            ;;
+          "-y")
+            year="$2"
+            shift
+            shift
+            ;;
+          "--month")
+            month="$2"
+            shift
+            shift
+            ;;
+          "-m")
+            month="$2"
+            shift
+            shift
+            ;;
+          *)
+            echo "Unrecognized argument: $1"
+            usage
         esac
-    done
-    if [[ $year != "*" ]]; then
+      done
+      if [[ $year != "*" ]]; then
         if [[ ! $year =~ ^[0-9]+$ ]]; then
-            echo "Year must be a positive integer."
-            usage
+          echo "Year must be a positive integer."
+          usage
         fi
-    fi
-    
-    if [[ $month != "*" ]]; then
+      fi
+
+      if [[ $month != "*" ]]; then
         if [[ ! $month =~ ^[0-9]+$ ]]; then
-            echo "Month must be a positive integer."
-            usage
+          echo "Month must be a positive integer."
+          usage
         fi
-        
+
         if [[ $month -le 0 || $month -ge 13 ]]; then
-            echo "Month must be between 1 and 12."
-            usage
+          echo "Month must be between 1 and 12."
+          usage
         fi
-    fi
-    
-    if [[ $month != "*" ]]; then
+      fi
+
+      if [[ $month != "*" ]]; then
         if [[ ${#month} < 2 ]]; then
-            month="0$month"
+          month="0$month"
         fi
-        
+
         if [[ $year == "*" ]]; then
-            year=`./current-date.sh --year`
+          year=`./current-date.sh --year`
         fi
-    fi
-    
-    if [[ $year == "*" ]]; then
+      fi
+
+      if [[ $year == "*" ]]; then
         echo "Summary of all expenses"
         echo ""
-    elif [[ $month == "*" ]]; then
+      elif [[ $month == "*" ]]; then
         echo "Summary of expenses for year $year"
         echo ""
-    else
+      else
         echo "Summary of expenses for year $year and month $month"
         echo ""
-    fi
-    
+      fi
+
     # 1. Create a directory to store aggregate category summary files
     current_epoch=$(date "+%s")
     summary_aggregate_dir="${SUMMARIES_DIR}/${current_epoch}"
     mkdir -p "${summary_aggregate_dir}"
-    
+
     # 2. Create aggregate summary files for all categories
     while IFS= read -r -d '' summary_file; do
-        # 2.1 Get category from summary file name
-        base_filename=$(basename "${summary_file}")
-        category=`echo "${base_filename}" | cut -d "." -f 1`
-        
+      # 2.1 Get category from summary file name
+      base_filename=$(basename "${summary_file}")
+      category=`echo "${base_filename}" | cut -d "." -f 1`
+
         # 2.2 Create aggregate file with zero spending for category if not exists
         aggr_summary_file="${summary_aggregate_dir}/${category}"
         if [[ ! -f "${aggr_summary_file}" ]]; then
-            echo "0" > "${aggr_summary_file}"
+          echo "0" > "${aggr_summary_file}"
         fi
-        
+
         # 2.3 Read the aggregate file & current summary file
         previous_spending=$(cat "${aggr_summary_file}")
         current_spending=$(cat "${summary_file}")
-        
+
         # 2.4 Calculate total spending
         total_spending=$(echo "${previous_spending}+${current_spending}" | bc)
-        
+
         # 2.5 Put total spending in the aggregate summary file
         echo "${total_spending}" > "${aggr_summary_file}"
-    done < <(find "${SUMMARIES_DIR}" \
+      done < <(find "${SUMMARIES_DIR}" \
         -type f \
         -path "${SUMMARIES_DIR}/$year-$month/*.spending" \
         -print0
-    )
-    
+      )
+
     # 3. Print spendings from all aggregate summary files
     while IFS= read -r -d '' file; do
-        category=$(basename "${file}")
-        spending=`cat "${file}"`
-        echo "💰${spending} spent for ${category}"
+      category=$(basename "${file}")
+      spending=`cat "${file}"`
+      echo "💰${spending} spent for ${category}"
     done < <(find "${summary_aggregate_dir}" \
-        -type f \
-        -print0
+      -type f \
+      -print0
     )
-    
+
     # 4. Remove the aggregate summary directory
     rm -rf "${summary_aggregate_dir}"
-}
+  }
 
-function dateToYearMonth() {
-  year=`echo $1 | cut -d "-" -f 1`
-  month=`echo $1 | cut -d "-" -f 2`
-  echo "$year-$month"
-}
+  function dateToYearMonth() {
+    year=`echo $1 | cut -d "-" -f 1`
+    month=`echo $1 | cut -d "-" -f 2`
+    echo "$year-$month"
+  }
 
-function reverse_date() {
+  function reverse_date() {
     year=`echo $1 | cut -d "-" -f 1`
     month=`echo $1 | cut -d "-" -f 2`
     day=`echo $1 | cut -d "-" -f 3`
     echo "$day-$month-$year"
-}
+  }
 
-function help() {
+  function help() {
     usage success
-}
+  }
 
-"$@"
+  "$@"
 
