@@ -89,3 +89,32 @@ You can view the summary of the expenses by category. That means, summary contai
 # View summary of all expenses
 ./expense-tracker summary
 ```
+
+### Setting budget
+
+You can set budget for a month or all months in given year.
+
+In order to set a budget for year *July, 2024* of *2000*, run the following command:
+
+```shell
+./expense-tracker budget --year 2024 --month 7 --amount 2000
+```
+
+In order to set a budget for all months of year *2023* of *1200*, run the following command:
+
+```shell
+./expense-tracker budget --year 2023 --amount 1200
+```
+
+In order to set a budget of 3000 for month of November of current year, run the following command:
+
+```shell
+./expense-tracker budget --month 11 --amount 3000
+```
+
+In order to set a budget of 4000 for current month of current year, run the following command:
+
+```shell
+./expense-tracker budget --amount 4000
+```
+
