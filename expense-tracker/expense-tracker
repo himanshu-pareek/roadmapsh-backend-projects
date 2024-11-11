@@ -147,7 +147,32 @@ function add() {
   # 5.5 Store the total spending in summary file
   echo "${total_spending}" > "${summary_file}"
 
+  # 6. Display warning if spendings exceeded budget
+  # 6.1 Check if budget is specified
+  budget_file="${BUDGETS_DIR}/${current_month}.budget"
+  if [[ -f "${budget_file}" ]]; then
+    # 6.2 Read the file to get the budget
+    budget=`cat ${budget_file}`
+    # 6.3 Get total spendings for current month
+    total_spending=`total_spendings_by_month ${current_month}`
+    # 6.4 Compare total spending and budget
+    if [[ ${total_spending} -gt ${budget} ]]; then
+      echo "⚠️ Budget exceeded for $current_month. [Budget - 💰$budget, Spent - 💰$total_spending]"
+    fi
+  fi
+
   echo "✅  Added expense with ID - ${id}"
+}
+
+function total_spendings_by_month() {
+  month="$1"
+  total_spending=0
+  spending_dir="${SUMMARIES_DIR}/${month}"
+  for spending_file in $spending_dir/*.spending; do
+    spending=`cat ${spending_file}`
+    total_spending=`echo "$total_spending + $spending" | bc`
+  done
+  echo $total_spending
 }
 
 function delete() {
