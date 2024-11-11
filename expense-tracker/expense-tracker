@@ -37,6 +37,13 @@ function usage() {
   echo "            $0 budget -y 2023 -a 1200 # Sets budget to 1,200 for [Jan-Dec], 2023"
   echo "            $0 budget -m 11 -a 2000 # Sets budget to 2,000 for November, current year"
   echo "            $0 budget -a 1000 # Sets budget to 1,000 for current month, current year"
+
+  echo "export - to export the budgets into a csv file"
+  echo "  Usage - $0 export [-f/--file <filename>]"
+  echo "  Example - $0 export # Exports expenses as csv on standard I/O"
+  echo "            $0 export > data.csv # Exports expenses in data.csv file"
+  echo "            $0 export --file data.csv # Exports expenses in data.csv file"
+
   if [[ $1 == "success" ]]; then
     exit 0
   else
@@ -49,6 +56,7 @@ EXPENSES_DIR="${DATA_DIR}/expenses"
 SUMMARIES_DIR="${DATA_DIR}/summaries"
 BUDGETS_DIR="${DATA_DIR}/budgets"
 MONTHS=(01 02 03 04 05 06 07 08 09 10 11 12)
+HEADERS=("id" "data" "description" "category" "amount")
 
 function add() {
   category="-"
@@ -495,22 +503,71 @@ function budget() {
   fi
 }
 
-  function dateToYearMonth() {
-    year=`echo $1 | cut -d "-" -f 1`
-    month=`echo $1 | cut -d "-" -f 2`
-    echo "$year-$month"
-  }
+function export() {
+  filename=""
+  while [[ $# > 0 ]]; do
+    case "$1" in
+      "--file")
+        filename="$2"
+        shift
+        shift
+        ;;
+      "-f")
+        filename="$2"
+        shift
+        shift
+        ;;
+      *)
+        echo "Unrecognized argument: $1"
+        usage
+    esac
+  done
 
-  function reverse_date() {
-    year=`echo $1 | cut -d "-" -f 1`
-    month=`echo $1 | cut -d "-" -f 2`
-    day=`echo $1 | cut -d "-" -f 3`
-    echo "$day-$month-$year"
-  }
+  header_to_write="id,date,description,category,amount"
+  if [[ $filename == "" ]]; then
+    echo $header_to_write
+  else
+    echo $header_to_write > "${filename}"
+  fi
 
-  function help() {
-    usage success
-  }
+  while IFS= read -r -d '' file; do
+    base_file=$(basename "${file}")
+    id=$(echo ${base_file} | cut -d '.' -f 1)
+    dt=`head -n 1 $file`
+    category=`head -n 2 $file | tail -n 1`
+    description=`head -n 3 $file | tail -n 1`
+    amount=`head -n 4 $file | tail -n 1`
+    row="$id,$dt,$description,$category,$amount"
+    if [[ $filename == "" ]]; then
+      echo $row
+    else
+      echo $row >> "${filename}"
+    fi
+  done < <(find "${EXPENSES_DIR}" \
+    -type f \
+    -name *.expense \
+    -print0
+  )
+
+
+}
+
+function dateToYearMonth() {
+  year=`echo $1 | cut -d "-" -f 1`
+  month=`echo $1 | cut -d "-" -f 2`
+  echo "$year-$month"
+}
+
+function reverse_date() {
+  year=`echo $1 | cut -d "-" -f 1`
+  month=`echo $1 | cut -d "-" -f 2`
+  day=`echo $1 | cut -d "-" -f 3`
+  echo "$day-$month-$year"
+}
+
+function help() {
+  usage success
+}
 
   "$@"
 

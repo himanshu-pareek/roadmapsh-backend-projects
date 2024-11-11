@@ -118,3 +118,11 @@ In order to set a budget of 4000 for current month of current year, run the foll
 ./expense-tracker budget --amount 4000
 ```
 
+### Exporting Expenses
+
+You can export all of the expenses as a CSV file. Run the following command to do that:
+
+```shell
+./expense-tracker export --file data.csv
+```
+
