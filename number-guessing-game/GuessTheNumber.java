@@ -125,8 +125,28 @@ enum DifficultyLevel {
 }
 
 public class GuessTheNumber {
+  private static Scanner scanner = new Scanner(System.in);
   public static void main(String[] args) {
-    new Game().start();
+    System.out.println("\nLoading the game 🎮\n");
+    while (true) {
+      new Game().start();
+
+      // Ask the user if they want to continue the game or not
+      boolean shouldQuit = doesUserWantToQuit();
+      if (shouldQuit) {
+        System.out.println("\nExiting the game. Bye 👋.");
+        break;
+      } else {
+        System.out.println("\nReloading the game 🎮\n");
+      }
+    }
+    scanner.close();
+  }
+
+  private static boolean doesUserWantToQuit() {
+    System.out.print("\nDo you want to play again(Y/N)? (Default - N): ");
+    String choice = scanner.nextLine();
+    return choice.isEmpty() || choice.charAt(0) == 'N';
   }
 }
 
