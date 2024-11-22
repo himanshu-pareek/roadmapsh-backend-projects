@@ -101,29 +101,9 @@ class Game {
   }
 
   private void printTimeTakenToGuess(long delta) {
-    long days = delta / (24 * 60 * 60 * 1000);
-    delta = delta - 24 * 60 * 60 * 1000 * days;
-    long hours = delta / (60 * 60 * 1000);
-    delta = delta - 60 * 60 * 1000 * hours;
-    long minutes = delta / (60 * 1000);
-    delta = delta - 60 * 1000 * minutes;
-    double seconds = (double) delta / 1000;
-    StringBuffer sb = new StringBuffer();
-    if (days > 0) {
-      sb.append(" " + days + " days");
-    }
-    if (hours > 0) {
-      sb.append(" " + hours + " hours");
-    }
-    if (minutes > 0) {
-      sb.append(" " + minutes + " minutes");
-    }
-    if (seconds > 0) {
-      sb.append(" " + seconds + " seconds");
-    }
-
-    System.out.printf("\n[ Time taken -%s ]\n", sb.toString());
+    System.out.printf("\n[ Time taken - %s ]\n", TimeUtil.readableTimeDifference(delta));
   }
+
 }
 
 enum DifficultyLevel {
@@ -153,6 +133,38 @@ enum DifficultyLevel {
     return getName() + " (" + getNumberOfChances() + " chances)";
   }
 }
+
+class TimeUtil {
+  private static final long SECONDS_PER_MS = 1000;
+  private static final long MINUTES_PER_MS = 60 * SECONDS_PER_MS;
+  private static final long HOURS_PER_MS = 60 * MINUTES_PER_MS;
+  private static final long DAYS_PER_MS = 24 * HOURS_PER_MS;
+  public static String readableTimeDifference(long delta) {
+    long days = delta / DAYS_PER_MS;
+    delta = delta - DAYS_PER_MS * days;
+    long hours = delta / HOURS_PER_MS;
+    delta = delta - HOURS_PER_MS * hours;
+    long minutes = delta / MINUTES_PER_MS;
+    delta = delta - MINUTES_PER_MS * minutes;
+    double seconds = (double) delta / SECONDS_PER_MS;
+    StringBuffer sb = new StringBuffer();
+    if (days > 0) {
+      sb.append(" " + days + " days");
+    }
+    if (hours > 0) {
+      sb.append(" " + hours + " hours");
+    }
+    if (minutes > 0) {
+      sb.append(" " + minutes + " minutes");
+    }
+    if (seconds > 0) {
+      sb.append(" " + seconds + " seconds");
+    }
+
+    return sb.toString().substring(0);
+  }
+}
+
 
 public class GuessTheNumber {
   private static Scanner scanner = new Scanner(System.in);
