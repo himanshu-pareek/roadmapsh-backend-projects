@@ -58,8 +58,11 @@ class Game {
     int answer = thinkOfANumber();
     int guessCount = 0;
     int guessedNumber = -1;
+    long startTimeMilliSeconds = System.currentTimeMillis();
+    long endTimeMilliSeconds = startTimeMilliSeconds;
     do {
       guessedNumber = guessANumber();
+      endTimeMilliSeconds = System.currentTimeMillis();
       ++guessCount;
       if (guessedNumber < answer) {
         System.out.println("Incorrect! The number is greater than " + guessedNumber + ".");
@@ -71,6 +74,8 @@ class Game {
     } while (guessCount < selectedLevel.getNumberOfChances() && guessedNumber != answer);
     if (guessedNumber != answer) {
       System.out.println("\nBetter luck next time");
+    } else {
+      printTimeTakenToGuess(endTimeMilliSeconds - startTimeMilliSeconds);
     }
   }
 
@@ -93,6 +98,31 @@ class Game {
         System.err.println("Invalid number " + guess + ". Try again!");
       }
     }
+  }
+
+  private void printTimeTakenToGuess(long delta) {
+    long days = delta / (24 * 60 * 60 * 1000);
+    delta = delta - 24 * 60 * 60 * 1000 * days;
+    long hours = delta / (60 * 60 * 1000);
+    delta = delta - 60 * 60 * 1000 * hours;
+    long minutes = delta / (60 * 1000);
+    delta = delta - 60 * 1000 * minutes;
+    double seconds = (double) delta / 1000;
+    StringBuffer sb = new StringBuffer();
+    if (days > 0) {
+      sb.append(" " + days + " days");
+    }
+    if (hours > 0) {
+      sb.append(" " + hours + " hours");
+    }
+    if (minutes > 0) {
+      sb.append(" " + minutes + " minutes");
+    }
+    if (seconds > 0) {
+      sb.append(" " + seconds + " seconds");
+    }
+
+    System.out.printf("\n[ Time taken -%s ]\n", sb.toString());
   }
 }
 
