@@ -12,15 +12,21 @@ In order to run any project, go to corresponding directory and follow the instru
    
     Github URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/task-tracker
 
-3. GitHub User Activity
+2. GitHub User Activity
 
     Project URL - https://roadmap.sh/projects/github-user-activity
    
     Github URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/github-activity
 
-4. Expense Tracker
+3. Expense Tracker
 
     Project URL - https://roadmap.sh/projects/expense-tracker
 
     Github URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/expense-tracker
+
+4. Number Guessing Game
+
+    Project URL - https://roadmap.sh/projects/number-guessing-game
+
+    Github URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/number-guessing-game
 

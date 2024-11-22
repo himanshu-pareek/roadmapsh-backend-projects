@@ -1,0 +1,2 @@
+javac GuessTheNumber.java && java GuessTheNumber
+
