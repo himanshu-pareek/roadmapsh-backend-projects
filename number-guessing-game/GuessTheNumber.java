@@ -1,5 +1,11 @@
 import java.util.Scanner;
 import java.util.Random;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 class Game {
   private static final int MIN=1;
@@ -13,10 +19,12 @@ class Game {
 
   private Scanner scanner;
   private Random random;
+  private BestScoreRepository bestScoreRepository;
 
   public Game() {
     this.scanner = new Scanner(System.in);
     this.random = new Random();
+    this.bestScoreRepository = new BestScoreRepository();
   }
 
   private static void printWelcomeMessage() {
@@ -76,6 +84,7 @@ class Game {
       System.out.println("\nBetter luck next time");
     } else {
       printTimeTakenToGuess(endTimeMilliSeconds - startTimeMilliSeconds);
+      printBestScoreTillNow(selectedLevel, new Score (guessCount, endTimeMilliSeconds - startTimeMilliSeconds));
     }
   }
 
@@ -104,6 +113,14 @@ class Game {
     System.out.printf("\n[ Time taken - %s ]\n", TimeUtil.readableTimeDifference(delta));
   }
 
+  private void printBestScoreTillNow(DifficultyLevel level, Score score) {
+    Score previousBestScore = this.bestScoreRepository.getBestScore(level);
+    boolean shouldUpdateBestScore = previousBestScore.announceNewBestScore(score);
+    if (shouldUpdateBestScore) {
+      System.out.println("Updating best score...");
+      this.bestScoreRepository.updateBestScore(level, score);
+    }
+  }
 }
 
 enum DifficultyLevel {
@@ -131,6 +148,98 @@ enum DifficultyLevel {
   @Override
   public String toString() {
     return getName() + " (" + getNumberOfChances() + " chances)";
+  }
+
+  public String getFileName() {
+    return getName().toUpperCase() + ".obj";
+  }
+}
+
+record Score(int attempts, long timeTaken) implements Serializable {
+  Score merge (Score other) {
+    int att = this.attempts;
+    if (att == -1 || att > other.attempts) {
+      att = other.attempts;
+    }
+    long tt = this.timeTaken;
+    if (tt == -1 || tt > other.timeTaken) {
+      tt = other.timeTaken;
+    }
+    return new Score (att, tt);
+  }
+
+  boolean announceNewBestScore(Score other) {
+    boolean isNewBestAttempts = announceNewBestAttempts (other.attempts);
+    boolean isNewBestTimeTaken = announceNewBestTimeTaken (other.timeTaken);
+    return isNewBestAttempts || isNewBestTimeTaken;
+  }
+
+  private boolean announceNewBestAttempts(int attempts) {
+    if (this.attempts == -1 || this.attempts > attempts) {
+      String previousAttempts = this.attempts == -1 ? "NONE" : String.valueOf (this.attempts);
+      System.out.println ("Congratulations 🎉. You just beat the best number of attempts.");
+      System.out.printf("\tPrevious attempts - %s, New attempts - %s\n", previousAttempts, String.valueOf (attempts));
+      return true;
+    }
+    return false;
+  }
+
+  private boolean announceNewBestTimeTaken(long timeTaken) {
+    if (this.timeTaken == -1 || this.timeTaken > timeTaken) {
+      String previousTimeTaken = this.timeTaken == -1 ? "NONE" : TimeUtil.readableTimeDifference (this.timeTaken);
+      String currentTimeTaken = TimeUtil.readableTimeDifference (timeTaken);
+      System.out.println("Congratulations 🎉. You just beat the best time taken to guess the number.");
+      System.out.printf("\tPrevious best time - %s, New best time - %s\n", previousTimeTaken, currentTimeTaken);
+      return true;
+    }
+    return false;
+  }
+
+}
+
+class BestScoreRepository {
+  private static final String ROOT_PATH = "./.data/best-scores";
+
+  public BestScoreRepository () {
+    new File(ROOT_PATH).mkdirs();
+  }
+
+  public Score getBestScore(DifficultyLevel level) {
+    String fileName = ROOT_PATH + '/' + level.getFileName();
+    File file = new File(fileName);
+    if (!file.exists() || !file.isFile()) {
+      createDefaultBestScore(level);
+    }
+    return readScoreFromFile(fileName);
+  }
+
+  private Score readScoreFromFile(String fileName) {
+    try (var in = new ObjectInputStream(new FileInputStream(fileName))) {
+      return (Score) in.readObject();
+    } catch (Exception e) {
+      System.err.println("Error while reading best score. Fetching default best score...");
+      return new Score(-1, -1);
+    }
+  }
+
+  private void createDefaultBestScore(DifficultyLevel level) {
+    saveBestScore(level, new Score(-1, -1));
+  }
+
+  private void saveBestScore(DifficultyLevel level, Score score) {
+    String fileName = ROOT_PATH + '/' + level.getFileName();
+    try (var out = new ObjectOutputStream(new FileOutputStream(fileName))) {
+      out.writeObject(score);
+      out.flush();
+    } catch (Exception e) {
+      System.err.println("Error while saving best score: " + e.getMessage());
+    }
+  }
+
+  public void updateBestScore(DifficultyLevel level, Score score) {
+    Score previousBestScore = getBestScore(level);
+    Score bestScore = previousBestScore.merge(score);
+    saveBestScore (level, bestScore);
   }
 }
 
