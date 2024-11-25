@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Unit converter</title>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+</head>
+<body th:data-fm="${measurements[0]}">
+<div class="main" x-data="measurementData()">
+    <div class="flex flex-row">
+        <div th:each="measurement: ${measurements}"
+             class="p-2 cursor-pointer"
+             th:attr="'x-on:click'=@{makeVisible('{x}')(x=${measurement})}">
+            <div th:text="${measurement.name}"></div>
+            <div th:attr="x-show=@{isVisible('{x}')(x=${measurement})}"
+                 class="w-full h-0.5 bg-black"
+                 x-cloak>
+            </div>
+        </div>
+    </div>
+    <ul>
+        <li th:each="measurement: ${measurements}"
+            th:attr="x-show=@{isVisible('{x}')(x=${measurement})}"
+            x-cloak>
+            <ol>
+                <li th:each="unit: ${measurement.units}">
+                    <div th:text="${unit.name}"></div>
+                </li>
+            </ol>
+        </li>
+    </ul>
+</div>
+<script>
+    function measurementData() {
+        return {
+            visibleMeasurement: document.querySelector('body').dataset.fm,
+            makeVisible(measurement) {
+                this.visibleMeasurement = measurement
+            },
+            isVisible(measurement) {
+                return this.visibleMeasurement === measurement
+            }
+        }
+    }
+</script>
+</body>
+</html>
