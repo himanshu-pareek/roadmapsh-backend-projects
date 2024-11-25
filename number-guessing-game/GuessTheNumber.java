@@ -82,6 +82,7 @@ class Game {
     } while (guessCount < selectedLevel.getNumberOfChances() && guessedNumber != answer);
     if (guessedNumber != answer) {
       System.out.println("\nBetter luck next time");
+      printBestScoreTillNow(selectedLevel, null);
     } else {
       printTimeTakenToGuess(endTimeMilliSeconds - startTimeMilliSeconds);
       printBestScoreTillNow(selectedLevel, new Score (guessCount, endTimeMilliSeconds - startTimeMilliSeconds));
@@ -114,12 +115,18 @@ class Game {
   }
 
   private void printBestScoreTillNow(DifficultyLevel level, Score score) {
-    Score previousBestScore = this.bestScoreRepository.getBestScore(level);
-    boolean shouldUpdateBestScore = previousBestScore.announceNewBestScore(score);
-    if (shouldUpdateBestScore) {
-      System.out.println("Updating best score...");
-      this.bestScoreRepository.updateBestScore(level, score);
+    if (score != null) {
+      Score previousBestScore = this.bestScoreRepository.getBestScore(level);
+      boolean shouldUpdateBestScore = previousBestScore.announceNewBestScore(score);
+      if (shouldUpdateBestScore) {
+        System.out.println("Updating best score...");
+        this.bestScoreRepository.updateBestScore(level, score);
+      }
     }
+
+    var bestScore = this.bestScoreRepository.getBestScore(level);
+    System.out.println("\nBest score for " + level.getName() + " difficulty level:");
+    bestScore.printForHuman();
   }
 }
 
@@ -195,6 +202,12 @@ record Score(int attempts, long timeTaken) implements Serializable {
     return false;
   }
 
+  public void printForHuman() {
+    String numAttempts = this.attempts == -1 ? "NONE" : String.valueOf (this.attempts);
+    String timeTakenStr = this.timeTaken == -1 ? "NONE" : TimeUtil.readableTimeDifference(this.timeTaken);
+    System.out.printf("Number of attempts: %s\n", numAttempts);
+    System.out.printf("Time taken: %s\n", timeTakenStr);
+  }
 }
 
 class BestScoreRepository {
