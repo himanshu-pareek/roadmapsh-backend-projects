@@ -1,0 +1,15 @@
+<div th:id="|result-${measurement}|" xmlns:th="http://www.thymeleaf.org">
+    <div>
+        Result of your calculation
+    </div>
+    <div>
+        <span th:text="${fromAmount}"></span> <span th:text="${fromUnit.suffix}"></span> = <span th:text="${toAmount}"></span> <span th:text="${toUnit.suffix}"></span>
+    </div>
+    <div class="mt-6 flex items-center justify-center gap-x-6">
+        <button type="reset"
+                th:attr="hx-get=@{/measurement-form/{x}(x=${measurement})},hx-target=@{#result-{x}(x=${measurement})}"
+                class="text-sm/6 font-semibold text-gray-900">
+            Reset
+        </button>
+    </div>
+</div>

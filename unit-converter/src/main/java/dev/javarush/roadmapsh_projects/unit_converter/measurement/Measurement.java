@@ -43,4 +43,8 @@ public enum Measurement {
   public List<Unit> getUnits() {
     return units.stream().toList();
   }
+
+  public boolean hasUnit(Unit unit) {
+    return this.units.contains(unit);
+  }
 }
