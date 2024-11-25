@@ -11,7 +11,7 @@
             display: none !important;
         }
     </style>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 <body th:data-fm="${measurements[0]}">
@@ -30,12 +30,73 @@
     <ul>
         <li th:each="measurement: ${measurements}"
             th:attr="x-show=@{isVisible('{x}')(x=${measurement})}"
+            class="p-2"
             x-cloak>
-            <ol>
-                <li th:each="unit: ${measurement.units}">
-                    <div th:text="${unit.name}"></div>
-                </li>
-            </ol>
+<!--            <ol>-->
+<!--                <li th:each="unit: ${measurement.units}">-->
+<!--                    <div th:text="${unit.name}"></div>-->
+<!--                </li>-->
+<!--            </ol>-->
+            <form>
+                <div class="space-y-12">
+                    <div class="border-b border-gray-900/10 pb-12">
+                        <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div class="sm:col-span-3">
+                                <label for="measure"
+                                       class="block text-sm/6 font-medium text-gray-900"
+                                       th:text="${measurement.instruction}"></label>
+                                <div class="mt-2">
+                                    <input type="number"
+                                           name="measure"
+                                           id="measure"
+                                           class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-3"></div>
+
+                            <div class="sm:col-span-3">
+                                <label for="fromUnit" class="block text-sm/6 font-medium text-gray-900">Unit to convert from</label>
+                                <div class="mt-2">
+                                    <select id="fromUnit"
+                                            name="fromUnit"
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm/6">
+                                        <option th:each="unit: ${measurement.units}"
+                                                th:value="${unit}"
+                                                th:text="${unit.name}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-3"></div>
+
+                            <div class="sm:col-span-3">
+                                <label for="toUnit" class="block text-sm/6 font-medium text-gray-900">Unit to convert to</label>
+                                <div class="mt-2">
+                                    <select id="toUnit"
+                                            name="toUnit"
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm/6">
+                                        <option th:each="unit: ${measurement.units}"
+                                                th:value="${unit}"
+                                                th:text="${unit.name}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex items-center justify-center gap-x-6">
+                    <button type="reset" class="text-sm/6 font-semibold text-gray-900">Reset</button>
+                    <button type="button"
+                            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Convert
+                    </button>
+                </div>
+            </form>
+
         </li>
     </ul>
 </div>
