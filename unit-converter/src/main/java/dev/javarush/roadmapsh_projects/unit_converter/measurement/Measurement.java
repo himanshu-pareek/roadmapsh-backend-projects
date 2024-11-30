@@ -4,14 +4,22 @@ import java.util.List;
 
 public enum Measurement {
   LENGTH(
+      // Default unit - Meter
       "Length",
       "Please enter length",
       List.of(
           Unit.METER,
-          Unit.INCH
+          Unit.CENTIMETER,
+          Unit.KILOMETER,
+          Unit.MILLIMETER,
+          Unit.INCH,
+          Unit.FEET,
+          Unit.MILE,
+          Unit.YARD
       )
   ),
   WEIGHT(
+      // Default unit - Gram
       "Weight",
       "Please enter weight to convert",
       List.of(
