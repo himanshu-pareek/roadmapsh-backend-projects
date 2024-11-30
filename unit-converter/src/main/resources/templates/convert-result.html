@@ -2,13 +2,17 @@
     <div>
         Result of your calculation
     </div>
-    <div>
-        <span th:text="${fromAmount}"></span> <span th:text="${fromUnit.suffix}"></span> = <span th:text="${toAmount}"></span> <span th:text="${toUnit.suffix}"></span>
+    <div class="p-4 text-2xl">
+        <span th:text="${fromAmount}" class="font-mono"></span>
+        <span th:text="${fromUnit.suffix}" class="font-sans"></span> =
+        <span th:text="${toAmount}" class="font-mono"></span>
+        <span th:text="${toUnit.suffix}" class="font-sans"></span>
     </div>
     <div class="mt-6 flex items-center justify-center gap-x-6">
         <button type="reset"
+                class="rounded-md border border-blue-400 bg-white px-3 py-2 text-sm font-semibold text-blue-600 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 th:attr="hx-get=@{/measurement-form/{x}(x=${measurement})},hx-target=@{#result-{x}(x=${measurement})}"
-                class="text-sm/6 font-semibold text-gray-900">
+                hx-swap="outerHTML">
             Reset
         </button>
     </div>

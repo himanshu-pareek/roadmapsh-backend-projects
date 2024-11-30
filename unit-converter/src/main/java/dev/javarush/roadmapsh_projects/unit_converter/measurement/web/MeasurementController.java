@@ -15,6 +15,6 @@ public class MeasurementController {
       Model model
   ) {
     model.addAttribute("measurement", measurement);
-    return "measurement-form";
+    return "fragments/measurement-form :: convert-form";
   }
 }
