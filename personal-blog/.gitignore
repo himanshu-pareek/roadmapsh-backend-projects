@@ -35,3 +35,6 @@ build/
 # Excludes for npm
 node_modules
 node
+
+# Environment file
+.env

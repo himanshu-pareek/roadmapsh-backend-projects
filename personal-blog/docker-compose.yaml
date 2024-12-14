@@ -2,7 +2,7 @@ services:
   db:
     image: 'postgres:12.20-bullseye'
     ports:
-      - "5432:5432"
+      - "5431:5432"
     environment:
       POSTGRES_DB: ${POSTGRES_DATABASE}
       POSTGRES_USER: ${POSTGRES_USER}
