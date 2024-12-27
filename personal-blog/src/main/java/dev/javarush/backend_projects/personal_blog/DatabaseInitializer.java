@@ -59,6 +59,6 @@ public class DatabaseInitializer implements CommandLineRunner {
   }
 
   private String generateRandomArticleTitle() {
-    return faker.lorem().sentence(5, 4);
+    return faker.book().title();
   }
 }

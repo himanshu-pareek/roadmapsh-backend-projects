@@ -1,22 +1,21 @@
 package dev.javarush.backend_projects.personal_blog.article;
 
+import java.time.LocalDate;
+
+import dev.javarush.backend_projects.personal_blog.article.util.ArticleUtil;
+import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
-import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
+import jakarta.persistence.Column;
 
 @Entity(name = "Article")
 @Table(name = "articles")
 public class Article {
   @EmbeddedId
-  @AttributeOverride(
-      name = "id",
-      column = @Column(name = "id")
-  )
+  @AttributeOverride(name = "id", column = @Column(name = "id"))
   private ArticleId id;
 
   @NotNull
@@ -31,7 +30,8 @@ public class Article {
   @Version
   private long version;
 
-  public Article() {}
+  public Article() {
+  }
 
   public Article(ArticleId id, String title, LocalDate publishDate, String content) {
     this.id = id;
@@ -44,36 +44,40 @@ public class Article {
     return id;
   }
 
-  public @NotNull String getTitle() {
+  public String getTitle() {
     return title;
   }
 
-  public void setTitle(@NotNull String title) {
-    this.title = title;
-  }
-
-  public @NotNull LocalDate getPublishDate() {
+  public LocalDate getPublishDate() {
     return publishDate;
   }
 
-  public void setPublishDate(@NotNull LocalDate publishDate) {
-    this.publishDate = publishDate;
-  }
-
-  public @NotNull String getContent() {
+  public String getContent() {
     return content;
-  }
-
-  public void setContent(@NotNull String content) {
-    this.content = content;
   }
 
   public long getVersion() {
     return version;
   }
 
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public void setPublishDate(LocalDate publishDate) {
+    this.publishDate = publishDate;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
   public void setVersion(long version) {
     this.version = version;
+  }
+
+  public String getPublishDateToDisplay() {
+    return ArticleUtil.formatDate(publishDate);
   }
 
   @Override
@@ -81,7 +85,7 @@ public class Article {
     return "Article{" +
         "id=" + id +
         ", title='" + title + '\'' +
-        ", publishDate=" + publishDate +
+        ", publishDate='" + publishDate + '\'' +
         ", content='" + content + '\'' +
         ", version=" + version +
         '}';

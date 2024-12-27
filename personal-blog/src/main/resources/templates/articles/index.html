@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Personal Blog</title>
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+</head>
+<body>
+<div class="mx-auto mt-2 max-w-screen-md">
+    <!-- Add content here -->
+    <h1 class="text-3xl font-semibold">Personal Blog</h1>
+    <div th:each="article : ${articles}"
+        class="flex flex-row p-1">
+        <h2 th:text="${article.title}"
+            class="grow"></h2>
+        <p th:text="${article.getPublishDateToDisplay()}"
+            class="text-slate-500 pl-1 text-nowrap">
+        </p>
+    </div>
+</div>
+</body>
+</html>

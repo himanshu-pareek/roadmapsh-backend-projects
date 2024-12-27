@@ -18,8 +18,11 @@ public class ArticleService {
         articleId,
         parameters.title(),
         parameters.publishData(),
-        parameters.content()
-    );
+        parameters.content());
     return this.repository.save(article);
+  }
+
+  public Iterable<Article> getAllArticles() {
+    return this.repository.findAll();
   }
 }
