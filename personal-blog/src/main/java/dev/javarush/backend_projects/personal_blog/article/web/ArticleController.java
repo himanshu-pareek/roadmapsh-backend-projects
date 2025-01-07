@@ -2,6 +2,7 @@ package dev.javarush.backend_projects.personal_blog.article.web;
 
 import java.util.UUID;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,14 @@ public class ArticleController {
         Article article = this.articleService.getArticleById(id);
         model.addAttribute("article", article);
         return "articles/article";
+    }
+
+    @GetMapping("admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String adminPage(Model model) {
+        var articles = this.articleService.getAllArticles();
+        model.addAttribute("articles", articles);
+        return "articles/admin";
     }
 
 }

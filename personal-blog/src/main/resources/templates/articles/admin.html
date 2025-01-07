@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Personal Blog</title>
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+</head>
+
+<body>
+    <div class="mx-auto mt-2 p-2 max-w-screen-md">
+        <div class="flex flex-row p-1">
+            <h1 class="text-3xl font-semibold flex-grow">Personal Blog</h1>
+            <a th:href="@{/articles/new}" class="text-slate-400 p-1 font-semibold text-nowrap">New</a>
+        </div>
+
+        <div th:each="article : ${articles}" class="flex flex-row p-1">
+            <a th:href="@{'/articles/' + ${article.id.asString()}}" class="flex-grow" th:text="${article.title}"></a>
+            <a th:href="@{'/articles/edit/' + ${article.id.asString()}}"
+                class="text-slate-400 p-1 font-semibold text-nowrap">Edit</a>
+            <a th:href="@{'/articles/delete/' + ${article.id.asString()}}"
+                class="text-slate-400 p-1 font-semibold text-nowrap">Delete</a>
+        </div>
+    </div>
+</body>
+
+</html>
