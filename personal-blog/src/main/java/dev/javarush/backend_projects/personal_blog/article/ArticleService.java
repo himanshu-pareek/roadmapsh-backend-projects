@@ -1,5 +1,7 @@
 package dev.javarush.backend_projects.personal_blog.article;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,5 +26,10 @@ public class ArticleService {
 
   public Iterable<Article> getAllArticles() {
     return this.repository.findAll();
+  }
+
+  public Article getArticleById(ArticleId id) {
+    return this.repository.findById(id)
+        .orElseThrow(() -> new ArticleNotFoundException(id));
   }
 }

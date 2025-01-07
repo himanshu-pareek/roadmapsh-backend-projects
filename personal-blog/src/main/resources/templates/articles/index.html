@@ -11,13 +11,12 @@
     <link rel="manifest" href="/assets/site.webmanifest">
 </head>
 <body>
-<div class="mx-auto mt-2 max-w-screen-md">
+<div class="mx-auto mt-2 p-2 max-w-screen-md">
     <!-- Add content here -->
     <h1 class="text-3xl font-semibold">Personal Blog</h1>
     <div th:each="article : ${articles}"
         class="flex flex-row p-1">
-        <h2 th:text="${article.title}"
-            class="grow"></h2>
+        <a th:href="@{'/articles/' + ${article.id.asString()}}" class="flex-grow" th:text="${article.title}"></a>
         <p th:text="${article.getPublishDateToDisplay()}"
             class="text-slate-500 pl-1 text-nowrap">
         </p>

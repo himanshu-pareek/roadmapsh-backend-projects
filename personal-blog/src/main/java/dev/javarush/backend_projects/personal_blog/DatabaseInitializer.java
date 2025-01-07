@@ -54,8 +54,7 @@ public class DatabaseInitializer implements CommandLineRunner {
   }
 
   private LocalDate generateRandomPublishDate() {
-    Date date = faker.date().past(1500, TimeUnit.DAYS);
-    return LocalDate.of(date.getYear(), date.getMonth() + 1, date.getDate());
+    return LocalDate.now().minusDays(random.nextInt(0, 365));
   }
 
   private String generateRandomArticleTitle() {

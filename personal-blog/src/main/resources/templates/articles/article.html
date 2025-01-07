@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${article.title}">ARTICLE TITLE</title>
+    <link rel="stylesheet" th:href="@{/css/application.css}">
+</head>
+
+<body class="mx-auto mt-2 p-2 max-w-screen-md">
+    <h1 class="text-4xl pb-2" th:text="${article.title}"></h1>
+    <p class="text-slate-500 pb-2" th:text="${article.getPublishDateToDisplay()}"></p>
+    <div th:utext="${article.content}"></div>
+</body>
+
+</html>
