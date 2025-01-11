@@ -1,7 +1,5 @@
 package dev.javarush.backend_projects.personal_blog.article;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
