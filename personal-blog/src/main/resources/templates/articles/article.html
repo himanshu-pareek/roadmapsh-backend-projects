@@ -11,7 +11,7 @@
 <body class="mx-auto mt-2 p-2 max-w-screen-md">
     <h1 class="text-4xl pb-2 text-center" th:text="${article.title}"></h1>
     <p class="text-slate-500 pb-2 text-right" th:text="${article.getPublishDateToDisplay()}"></p>
-    <div th:utext="${article.content}"></div>
+    <div th:text="${article.content}" style="white-space: pre-wrap;"></div>
 </body>
 
 </html>
