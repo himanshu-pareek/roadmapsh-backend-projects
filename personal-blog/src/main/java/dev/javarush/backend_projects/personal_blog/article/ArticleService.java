@@ -1,5 +1,6 @@
 package dev.javarush.backend_projects.personal_blog.article;
 
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,5 +30,14 @@ public class ArticleService {
   public Article getArticleById(ArticleId id) {
     return this.repository.findById(id)
         .orElseThrow(() -> new ArticleNotFoundException(id));
+  }
+
+  public void updateArticle(ArticleId id, UpdateArticleParameters parameters) {
+    var article = this.getArticleById(id);
+    if (article.getVersion() != parameters.version()) {
+      throw new ObjectOptimisticLockingFailureException(
+          Article.class, id.asString());
+    }
+    parameters.update(article);
   }
 }

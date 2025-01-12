@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title th:text="${editMode.name == 'CREATE'} ? 'Create article' : 'Update article'">TITLE</title>
+    <title th:text="${editMode.name == 'CREATE'} ? 'New article' : 'Update article'">TITLE</title>
     <link rel="stylesheet" th:href="@{/css/application.css}">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
@@ -14,11 +14,12 @@
 
 <body class="mx-auto mt-2 p-2 max-w-screen-md">
 
-    <h1 class="text-4xl pb-2" th:text="${editMode.name == 'CREATE'} ? 'Create article' : 'Update article'"></h1>
+    <h1 class="text-4xl pb-2" th:text="${editMode.name == 'CREATE'} ? 'New article' : 'Update article'"></h1>
 
     <form id="article-form" th:object="${article}"
-        th:action="@{${editMode.name == 'CREATE'} ? '/articles' : '/articles/' + ${article.id.asString()}}"
+        th:action="@{${editMode.name == 'CREATE'} ? '/articles' : '/articles/' + ${article.id}}"
         method="post" class="flex flex-col p-1">
+        <input th:if="${editMode?.name() == 'UPDATE'}" th:field="*{version}" type="hidden">
         <div class="flex flex-col p-1 pb-4">
             <label for="title" class="text-slate-500 font-semibold w-full">Title</label>
             <input type="text" id="title" name="title" th:field="*{title}" required minlength="5" maxlength="100"

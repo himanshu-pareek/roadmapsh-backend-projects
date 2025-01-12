@@ -30,6 +30,30 @@ public class ArticleController {
         return "articles/index";
     }
 
+    @GetMapping("articles/{id}/edit")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String editArticleForm(@PathVariable("id") ArticleId id, Model model) {
+        Article article = this.articleService.getArticleById(id);
+        model.addAttribute("editMode", EditMode.UPDATE);
+        model.addAttribute("article", EditArticleFormData.fromArticle(article));
+        return "articles/edit";
+    }
+
+    @PostMapping("articles/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String updateArticle(
+            @PathVariable("id") ArticleId id,
+            @Validated @ModelAttribute("article") EditArticleFormData data,
+            BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("editMode", EditMode.UPDATE);
+            return "articles/edit";
+        }
+        this.articleService.updateArticle(id, data.toParameters());
+        return "redirect:/admin";
+    }
+
     @GetMapping("articles/{id}")
     public String singleArticle(@PathVariable("id") ArticleId id, Model model) {
         Article article = this.articleService.getArticleById(id);
@@ -54,6 +78,7 @@ public class ArticleController {
     }
 
     @PostMapping("articles")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createArticle(
             @Validated @ModelAttribute("article") CreateArticleFormData data,
             BindingResult bindingResult,
