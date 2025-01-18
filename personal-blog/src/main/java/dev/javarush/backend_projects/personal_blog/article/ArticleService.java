@@ -40,4 +40,8 @@ public class ArticleService {
     }
     parameters.update(article);
   }
+
+  public void deleteArticle(ArticleId id) {
+    this.repository.deleteById(id);
+  }
 }

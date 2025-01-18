@@ -19,14 +19,31 @@
             <a th:href="@{/new}" class="text-slate-400 p-1 font-semibold text-nowrap">+ New</a>
         </div>
 
-        <div th:each="article : ${articles}" class="flex flex-row p-1">
+        <div th:each="article : ${articles}"
+        class="article flex flex-row p-1"
+        th:data-id="${article.id.asString()}"
+        th:data-title="${article.title}">
             <a th:href="@{'/articles/' + ${article.id.asString()}}" class="flex-grow" th:text="${article.title}"></a>
             <a th:href="@{'/articles/' + ${article.id.asString()} + '/edit'}"
                 class="text-slate-400 p-1 font-semibold text-nowrap">Edit</a>
-            <a th:href="@{'/articles/delete/' + ${article.id.asString()}}"
-                class="text-slate-400 p-1 font-semibold text-nowrap">Delete</a>
+            <form th:action="@{'/articles/' + ${article.id.asString()}}" class="delete-link" th:method="delete">
+                <button type="submit" class="text-slate-400 p-1 font-semibold text-nowrap">Delete</button>
+            </form>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.article .delete-link').forEach(form => {
+            form.addEventListener('submit', (event) => {
+                const article = event.target.closest('.article');
+                const title = article.dataset.title;
+                event.preventDefault();
+                if (confirm(`Are you sure you want to delete '${title}?'`)) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

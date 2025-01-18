@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -88,6 +89,13 @@ public class ArticleController {
             return "articles/edit";
         }
         this.articleService.createArticle(data.toParameters());
+        return "redirect:/admin";
+    }
+
+    @DeleteMapping("articles/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteArticle(@PathVariable("id") ArticleId id) {
+        this.articleService.deleteArticle(id);
         return "redirect:/admin";
     }
 
