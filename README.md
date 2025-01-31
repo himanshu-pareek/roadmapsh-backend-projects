@@ -36,3 +36,9 @@ In order to run any project, go to corresponding directory and follow the instru
 
     Github URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/unit-converter
 
+6. Personal Blog
+
+    Project URL - https://roadmap.sh/projects/personal-blog
+
+    Github URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/personal-blog
+
