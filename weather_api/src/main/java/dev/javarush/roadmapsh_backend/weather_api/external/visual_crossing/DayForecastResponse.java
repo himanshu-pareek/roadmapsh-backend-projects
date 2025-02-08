@@ -1,6 +1,13 @@
 package dev.javarush.roadmapsh_backend.weather_api.external.visual_crossing;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
+
+import dev.javarush.roadmapsh_backend.weather_api.DayForecast;
+import dev.javarush.roadmapsh_backend.weather_api.TemperatureInfo;
 
 public record DayForecastResponse(
     @JsonAlias("datetime") String date,
@@ -24,5 +31,22 @@ public record DayForecastResponse(
     String description,
     String icon
 ) {
+
+    public DayForecast toDayForecast() {
+        return new DayForecast(
+                LocalDate.parse(date),
+                new TemperatureInfo(maxTemperature, minTemperature, temperature),
+                new TemperatureInfo(feelsMaxTemperature, feelsMinTemperature, feelsLikeTemperature),
+                dew,
+                humididy,
+                windSpeed,
+                pressure,
+                visibility,
+                LocalDateTime.ofEpochSecond(sunriseEpoch, 0, ZoneOffset.UTC),
+                LocalDateTime.ofEpochSecond(sunsetEpoch, 0, ZoneOffset.UTC),
+                conditions,
+                description,
+                icon);
+    }
 
 }
