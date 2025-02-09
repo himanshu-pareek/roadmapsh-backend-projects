@@ -1,14 +1,15 @@
 package dev.javarush.roadmapsh_backend.weather_api;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record DayForecast(
-    LocalDate date,
-    TemperatureInfo temperatureInfo,
+        LocalDate date,
+                TemperatureInfo temperatureInfo,
         TemperatureInfo feelsLikeTemperatureInfo,
-                double dew,
-        double humididy,
+        double dew,
+                double humididy,
         double windSpeed,
         double pressure,
         double visibility,
@@ -16,7 +17,6 @@ public record DayForecast(
         LocalDateTime sunset,
         String condition,
         String description,
-        String icon
-) {
-    
+        String icon) implements Serializable {
+
 }
