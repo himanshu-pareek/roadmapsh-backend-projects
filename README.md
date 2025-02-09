@@ -4,6 +4,8 @@ This repository contains solutions to some backend projects listed at [roadmap.s
 
 In order to run any project, go to corresponding directory and follow the instructions there.
 
+Please find below list of projects
+
 ## List of projects
 
 1. Task Tracker
