@@ -1,5 +1,6 @@
 services:
   redis:
-    image: 'redis:latest'
+    image: 'redis:7.4.1'
+    container_name: 'weather-api-redis'
     ports:
       - '6379:6379'

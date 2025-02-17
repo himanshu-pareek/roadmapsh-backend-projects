@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,7 +18,8 @@ import dev.javarush.roadmapsh_backend.weather_api.WeatherService;
 public class CachedWeatherService implements WeatherService {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(CachedWeatherService.class);
-    private static final Duration CACHE_DURATION = Duration.ofSeconds(10);
+    @Value("${weather.api.cache.duration.seconds}")
+    private int cacheDurationSeconds;
 
     private final WeatherService weatherService;
     private final RedisTemplate<String, CachedWeatherForecast> redisTemplate;
@@ -44,7 +46,7 @@ public class CachedWeatherService implements WeatherService {
                 cachedForecast = new CachedWeatherForecast(null, e);
             }
             log.info("Caching forecast for city: {}", city);
-            redisTemplate.opsForValue().set(city, cachedForecast, CACHE_DURATION);
+            redisTemplate.opsForValue().set(city, cachedForecast, Duration.ofSeconds(cacheDurationSeconds));
         } else {
             log.info("Cache hit for city: {}", city);
         }
