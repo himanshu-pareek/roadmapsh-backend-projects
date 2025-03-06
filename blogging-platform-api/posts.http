@@ -1,0 +1,15 @@
+### Create a new post
+
+POST http://localhost:8080/api/v1/posts
+Content-Type: application/json
+
+{
+  "title": "My first post",
+  "content": "This is the content of my first post",
+  "category": {
+    "name": "Technology"
+  },
+  "tags": [
+    "spring", "postgresql"
+  ]
+}
