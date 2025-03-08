@@ -35,10 +35,16 @@ public class PostController {
     }
 
     @PatchMapping("{id}")
+    @ResponseStatus(code = org.springframework.http.HttpStatus.OK)
     public Post update(
             @PathVariable(value = "id", required = true) Integer id,
             @Validated @RequestBody UpdatePostParameters parameters
     ) {
         return this.postService.updatePost(id, parameters);
+    }
+
+    @DeleteMapping("{id}")
+    public void deletePost(@PathVariable(value = "id", required = true) Integer id) {
+        this.postService.deletePost(id);
     }
 }

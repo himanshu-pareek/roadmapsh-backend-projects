@@ -48,4 +48,9 @@ public class PostService {
         parameters.update(post, this::getPostCategory);
         return this.postRepository.save(post);
     }
+
+    public void deletePost(Integer id) {
+        Post post = getPost(id);
+        this.postRepository.delete(post);
+    }
 }

@@ -27,3 +27,7 @@ Content-Type: application/json
   "title": "My first updaged post",
   "category-id": 2
 }
+
+### Delete post by id
+
+DELETE http://localhost:8080/api/v1/posts/2
