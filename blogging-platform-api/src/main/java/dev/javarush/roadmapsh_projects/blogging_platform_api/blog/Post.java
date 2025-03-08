@@ -1,20 +1,22 @@
-package dev.javarush.roadmapsh_projects.blogging_platform_api;
+package dev.javarush.roadmapsh_projects.blogging_platform_api.blog;
 
+import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "post")
+@Table(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_id_seq_generator")
-    @SequenceGenerator(name = "post_id_seq_generator", sequenceName = "post_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "posts_id_seq_generator")
+    @SequenceGenerator(name = "posts_id_seq_generator", sequenceName = "posts_id_seq", allocationSize = 1)
     private Integer id;
 
     @NotNull
@@ -32,7 +34,8 @@ public class Post {
     @JoinColumn(name = "category_id")
     private PostCategory category;
 
-    @ElementCollection
+    @Type(ListArrayType.class)
+    @Column(columnDefinition = "text[]")
     @NotNull
     @Size(min = 1, max = 5)
     private List<String> tags;
@@ -48,6 +51,8 @@ public class Post {
         this.content = content;
         this.category = category;
         this.tags = tags;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public Integer getId() {

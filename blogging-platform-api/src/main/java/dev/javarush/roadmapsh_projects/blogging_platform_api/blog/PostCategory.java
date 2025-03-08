@@ -1,4 +1,4 @@
-package dev.javarush.roadmapsh_projects.blogging_platform_api;
+package dev.javarush.roadmapsh_projects.blogging_platform_api.blog;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name = "post_category")
+@Table(name = "post_categories")
 public class PostCategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_category_id_seq_generator")
-    @SequenceGenerator(name = "post_category_id_seq_generator", sequenceName = "post_category_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_categories_id_seq_generator")
+    @SequenceGenerator(name = "post_categories_id_seq_generator", sequenceName = "post_categories_id_seq", allocationSize = 1)
 
     private Integer id;
 
