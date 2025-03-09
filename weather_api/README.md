@@ -1,4 +1,4 @@
-# Personal Blog
+# Weather Api Wrapper
 
 [Project URL](https://roadmap.sh/projects/weather-api-wrapper-service)
 [Submission URL](https://roadmap.sh/projects/weather-api-wrapper-service/solutions?u=6479b105c4ec366ad5b756da)

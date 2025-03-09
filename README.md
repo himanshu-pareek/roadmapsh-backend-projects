@@ -53,3 +53,13 @@ Please find below list of projects
     Github URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/weather_api
 
     Submission URL - https://roadmap.sh/projects/weather-api-wrapper-service/solutions?u=6479b105c4ec366ad5b756da
+
+8. Blogging Platform API
+
+    Project URL - https://roadmap.sh/projects/blogging-platform-api
+
+    Github URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/blogging-platform-api
+
+    Submission URL - 
+
+
