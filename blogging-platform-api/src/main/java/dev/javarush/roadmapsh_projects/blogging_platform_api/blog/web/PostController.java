@@ -31,8 +31,9 @@ public class PostController {
     }
 
     @GetMapping
-    public PostList getAll() {
-        var posts = this.postService.getAllPosts();
+    public PostList getAll(@RequestParam(value = "term", required = false) String term) {
+        term = cleanSearchTerm(term);
+        var posts = term == null ? postService.getAllPosts() : postService.searchPosts(term);
         return new PostList(posts);
     }
 
@@ -48,5 +49,16 @@ public class PostController {
     @DeleteMapping("{id}")
     public void deletePost(@PathVariable(value = "id", required = true) Integer id) {
         this.postService.deletePost(id);
+    }
+
+    private String cleanSearchTerm(String term) {
+        if (term == null) {
+            return null;
+        }
+        term = term.trim();
+        if (term.isEmpty()) {
+            return null;
+        }
+        return term;
     }
 }

@@ -46,6 +46,10 @@ public class PostService {
         return this.postRepository.findAllWithoutContent();
     }
 
+    public Collection<PostWithoutContent> searchPosts(String term) {
+        return this.postRepository.searchForPostsUsingTerm(term);
+    }
+
     public Post updatePost(Integer id, UpdatePostParameters parameters) {
         Post post = getPost(id);
         parameters.update(post, this::getPostCategory);
