@@ -1,6 +1,7 @@
 package dev.javarush.roadmapsh_projects.blogging_platform_api.configuration.web;
 
 import dev.javarush.roadmapsh_projects.blogging_platform_api.exceptions.BadRequestException;
+import dev.javarush.roadmapsh_projects.blogging_platform_api.exceptions.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,10 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(BadRequestException.class)
     public ProblemDetail handleBadRequestException(BadRequestException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ProblemDetail handleResourceNotFoundException(ResourceNotFoundException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getLocalizedMessage());
     }
 }

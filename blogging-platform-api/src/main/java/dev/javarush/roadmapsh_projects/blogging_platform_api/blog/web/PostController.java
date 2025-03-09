@@ -3,6 +3,7 @@ package dev.javarush.roadmapsh_projects.blogging_platform_api.blog.web;
 import dev.javarush.roadmapsh_projects.blogging_platform_api.blog.Post;
 import dev.javarush.roadmapsh_projects.blogging_platform_api.blog.PostService;
 import dev.javarush.roadmapsh_projects.blogging_platform_api.blog.dto.CreatePostParameters;
+import dev.javarush.roadmapsh_projects.blogging_platform_api.blog.dto.PostList;
 import dev.javarush.roadmapsh_projects.blogging_platform_api.blog.dto.UpdatePostParameters;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,9 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> getAll() {
-        return this.postService.getAllPosts();
+    public PostList getAll() {
+        var posts = this.postService.getAllPosts();
+        return new PostList(posts);
     }
 
     @PatchMapping("{id}")

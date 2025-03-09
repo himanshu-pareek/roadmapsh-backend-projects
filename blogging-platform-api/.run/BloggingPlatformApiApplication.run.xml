@@ -12,4 +12,20 @@
       <option name="Make" enabled="true" />
     </method>
   </configuration>
+  <configuration default="false" name="BloggingPlatformApiApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="envFilePaths">
+      <option value="$PROJECT_DIR$/.env" />
+    </option>
+    <option name="MAIN_CLASS_NAME" value="dev.javarush.roadmapsh_projects.blogging_platform_api.BloggingPlatformApiApplication" />
+    <module name="blogging-platform-api.main" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="dev.javarush.roadmapsh_projects.blogging_platform_api.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
 </component>

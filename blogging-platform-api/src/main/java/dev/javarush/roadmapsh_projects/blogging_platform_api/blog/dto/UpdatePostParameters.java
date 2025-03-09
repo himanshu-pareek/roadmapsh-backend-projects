@@ -7,6 +7,7 @@ import dev.javarush.roadmapsh_projects.blogging_platform_api.exceptions.BadReque
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 
@@ -35,5 +36,6 @@ public record UpdatePostParameters(
         if (tags != null) {
             post.setTags(tags);
         }
+        post.setUpdatedAt(LocalDateTime.now());
     }
 }

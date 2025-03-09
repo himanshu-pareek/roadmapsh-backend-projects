@@ -1,10 +1,13 @@
 package dev.javarush.roadmapsh_projects.blogging_platform_api.blog;
 
+import dev.javarush.roadmapsh_projects.blogging_platform_api.PostWithoutContent;
 import dev.javarush.roadmapsh_projects.blogging_platform_api.blog.dto.CreatePostParameters;
 import dev.javarush.roadmapsh_projects.blogging_platform_api.blog.dto.UpdatePostParameters;
 import dev.javarush.roadmapsh_projects.blogging_platform_api.exceptions.BadRequestException;
+import dev.javarush.roadmapsh_projects.blogging_platform_api.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -19,7 +22,7 @@ public class PostService {
 
     private PostCategory getPostCategory(Integer id) {
         return this.postCategoryRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Post category with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Post category with id " + id + " not found"));
     }
 
     public Post createPost(CreatePostParameters parameters) {
@@ -36,11 +39,11 @@ public class PostService {
 
     public Post getPost(Integer id) {
         return this.postRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Post with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Post with id " + id + " not found"));
     }
 
-    public List<Post> getAllPosts() {
-        return this.postRepository.findAll();
+    public Collection<PostWithoutContent> getAllPosts() {
+        return this.postRepository.findAllWithoutContent();
     }
 
     public Post updatePost(Integer id, UpdatePostParameters parameters) {
