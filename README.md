@@ -60,6 +60,6 @@ Please find below list of projects
 
     Github URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/blogging-platform-api
 
-    Submission URL - 
+    Submission URL - https://roadmap.sh/projects/blogging-platform-api/solutions?u=6479b105c4ec366ad5b756da
 
 
