@@ -6,7 +6,6 @@ public record Todo(
         long id,
         String title,
         String description,
-        boolean completed,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
