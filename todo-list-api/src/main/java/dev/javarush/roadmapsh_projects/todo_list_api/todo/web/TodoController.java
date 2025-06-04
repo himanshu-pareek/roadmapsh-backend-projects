@@ -21,8 +21,8 @@ public class TodoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Todo createTodo(@RequestBody @Validated TodoCreateRequest data) {
-        String username = loggedInUser();
-        return service.createTodo(username, data.title(), data.description());
+        String owner = loggedInUser();
+        return service.createTodo(owner, data.title(), data.description());
     }
 
     @GetMapping

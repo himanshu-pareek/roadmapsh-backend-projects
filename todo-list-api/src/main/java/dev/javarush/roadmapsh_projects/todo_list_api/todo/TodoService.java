@@ -12,11 +12,11 @@ public class TodoService {
         this.repository = repository;
     }
 
-    public Todo createTodo (String username, String title, String description) {
-        return repository.insertTodo(username, title, description);
+    public Todo createTodo (String owner, String title, String description) {
+        return repository.insertTodo(owner, title, description);
     }
 
-    public List<Todo> getTodos(String username, Integer page, Integer size) {
-        return repository.findTodos(username, page, size);
+    public List<Todo> getTodos(String owner, Integer page, Integer size) {
+        return repository.findTodos(owner, page, size);
     }
 }

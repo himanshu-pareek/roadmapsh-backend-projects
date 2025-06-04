@@ -3,7 +3,7 @@ package dev.javarush.roadmapsh_projects.todo_list_api.todo;
 import java.util.List;
 
 public interface TodoRepository {
-    Todo insertTodo (String username, String title, String description);
+    Todo insertTodo (String owner, String title, String description);
 
-    List<Todo> findTodos(String username, Integer page, Integer size);
+    List<Todo> findTodos(String owner, Integer page, Integer size);
 }

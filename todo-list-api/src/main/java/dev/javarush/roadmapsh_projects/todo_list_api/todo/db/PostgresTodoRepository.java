@@ -37,13 +37,13 @@ public class PostgresTodoRepository implements TodoRepository {
     }
 
     @Override
-    public Todo insertTodo(String username, String title, String description) {
+    public Todo insertTodo(String owner, String title, String description) {
         LocalDateTime now = LocalDateTime.now();
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsUpdated = jdbc.sql(INSERT_TODO_SQL)
                 .param("title", title)
                 .param("description", description)
-                .param("owner", username)
+                .param("owner", owner)
                 .param("completed", false)
                 .param("created_at", now)
                 .param("updated_at", now)
@@ -59,9 +59,9 @@ public class PostgresTodoRepository implements TodoRepository {
     }
 
     @Override
-    public List<Todo> findTodos(String username, Integer page, Integer size) {
+    public List<Todo> findTodos(String owner, Integer page, Integer size) {
         return jdbc.sql(FIND_TODOS_SQL)
-                .param("owner", username)
+                .param("owner", owner)
                 .param("skip", (page - 1) * size)
                 .param("limit", size)
                 .query(new RowMapper<Todo>() {

@@ -37,6 +37,7 @@ public class SQLAuthTokenRepository implements AuthTokenRepository {
             if (obj.isEmpty()) {
                 break;
             }
+            token = UUID.randomUUID().toString();
         }
         LocalDateTime createdAt = LocalDateTime.now();
         LocalDateTime expiresAt = createdAt.plusSeconds(tokenTTLSeconds);
