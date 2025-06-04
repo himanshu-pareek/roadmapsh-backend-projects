@@ -3,7 +3,6 @@ package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security;
 import dev.javarush.roadmapsh_projects.todo_list_api.auth.AuthTokenRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -19,20 +18,18 @@ import javax.sql.DataSource;
 public class WebSecurityConfiguration {
 
     private final AuthTokenRepository authTokenRepository;
-    private UserDetailsManager userDetailsManagerBean;
 
     public WebSecurityConfiguration(AuthTokenRepository authTokenRepository) {
         this.authTokenRepository = authTokenRepository;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsManager userDetailsManager) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(authz ->
                 authz.requestMatchers("/auth/*", "/error", "/error/*").permitAll()
                 .anyRequest().authenticated());
-        http.addFilterBefore(new TokenAuthenticationFilter(authTokenRepository, userDetailsManagerBean), AuthorizationFilter.class);
-        http.formLogin(Customizer.withDefaults());
+        http.addFilterBefore(new TokenAuthenticationFilter(authTokenRepository, userDetailsManager), AuthorizationFilter.class);
         return http.build();
     }
 
@@ -43,7 +40,6 @@ public class WebSecurityConfiguration {
 
     @Bean
     UserDetailsManager userDetailsManager(DataSource dataSource) {
-        userDetailsManagerBean = new JdbcUserDetailsManager(dataSource);
-        return userDetailsManagerBean;
+        return new JdbcUserDetailsManager(dataSource);
     }
 }

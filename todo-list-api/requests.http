@@ -1,0 +1,33 @@
+### Register a user
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+    "email": "jane.doe@javarush.dev",
+    "password": "Jane@123"
+}
+
+### Login as a user
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "email": "john.doe@javarush.dev",
+    "password": "John@123"
+}
+
+
+### Get a list of all todos
+GET http://localhost:8080/todos?page=1&size=50
+Authorization: Bearer 259c3b06-6adc-4ad5-b17e-8c630cb38e98
+
+### Create a todo
+POST http://localhost:8080/todos
+Content-Type: application/json
+Authorization: Bearer 259c3b06-6adc-4ad5-b17e-8c630cb38e98
+
+{
+    "title": "Take a good sleep",
+    "description": "Sleep for 8 hours"
+}
+
