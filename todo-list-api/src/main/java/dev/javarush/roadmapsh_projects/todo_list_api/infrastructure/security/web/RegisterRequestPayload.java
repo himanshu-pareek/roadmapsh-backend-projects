@@ -1,4 +1,4 @@
-package dev.javarush.roadmapsh_projects.todo_list_api.auth.web;
+package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.web;
 
 import org.springframework.util.Assert;
 

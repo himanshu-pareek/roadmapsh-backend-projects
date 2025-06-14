@@ -1,4 +1,4 @@
-package dev.javarush.roadmapsh_projects.todo_list_api.auth;
+package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;

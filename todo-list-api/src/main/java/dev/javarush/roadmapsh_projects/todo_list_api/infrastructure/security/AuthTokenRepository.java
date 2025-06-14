@@ -1,4 +1,4 @@
-package dev.javarush.roadmapsh_projects.todo_list_api.auth;
+package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security;
 
 import java.util.Optional;
 

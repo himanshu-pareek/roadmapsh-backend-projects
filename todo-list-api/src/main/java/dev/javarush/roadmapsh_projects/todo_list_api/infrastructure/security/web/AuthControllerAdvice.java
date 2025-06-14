@@ -1,6 +1,6 @@
-package dev.javarush.roadmapsh_projects.todo_list_api.auth.web;
+package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.web;
 
-import dev.javarush.roadmapsh_projects.todo_list_api.auth.InvalidCredentialsException;
+import dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.InvalidCredentialsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;

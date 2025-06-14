@@ -1,8 +1,8 @@
-package dev.javarush.roadmapsh_projects.todo_list_api.auth.web;
+package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.web;
 
-import dev.javarush.roadmapsh_projects.todo_list_api.auth.AuthToken;
-import dev.javarush.roadmapsh_projects.todo_list_api.auth.AuthTokenRepository;
-import dev.javarush.roadmapsh_projects.todo_list_api.auth.InvalidCredentialsException;
+import dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.AuthToken;
+import dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.AuthTokenRepository;
+import dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.InvalidCredentialsException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("auth")

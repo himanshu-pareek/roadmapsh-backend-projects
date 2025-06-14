@@ -1,6 +1,7 @@
-package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security;
+package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.config;
 
-import dev.javarush.roadmapsh_projects.todo_list_api.auth.AuthTokenRepository;
+import dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.AuthTokenRepository;
+import dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.web.TokenAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

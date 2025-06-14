@@ -3,8 +3,8 @@ POST http://localhost:8080/auth/register
 Content-Type: application/json
 
 {
-    "email": "jane.doe@javarush.dev",
-    "password": "Jane@123"
+    "email": "jules.doe@javarush.dev",
+    "password": "Jules@123"
 }
 
 ### Login as a user
@@ -18,16 +18,31 @@ Content-Type: application/json
 
 
 ### Get a list of all todos
-GET http://localhost:8080/todos?page=1&size=50
-Authorization: Bearer 259c3b06-6adc-4ad5-b17e-8c630cb38e98
+GET http://localhost:8080/todos?page=1&size=4
+Authorization: Bearer 4091d1ea-8166-447e-9cdb-2aa8cae62c76
 
 ### Create a todo
 POST http://localhost:8080/todos
 Content-Type: application/json
-Authorization: Bearer 259c3b06-6adc-4ad5-b17e-8c630cb38e98
+Authorization: Bearer 4091d1ea-8166-447e-9cdb-2aa8cae62c76
 
 {
-    "title": "Take a good sleep",
-    "description": "Sleep for 8 hours"
+    "title": "Some todo title",
+    "description": "Some todo description"
 }
 
+
+### Update a todo
+PATCH http://localhost:8080/todos/57
+Content-Type: application/json
+Authorization: Bearer 4091d1ea-8166-447e-9cdb-2aa8cae62c76
+
+{
+    "title": "Buy groceries",
+    "description": "Buy bread, butter, eggs, milk and fruits"
+}
+
+
+### Delete a todo
+DELETE http://localhost:8080/todos/57
+Authorization: Bearer 4091d1ea-8166-447e-9cdb-2aa8cae62c76

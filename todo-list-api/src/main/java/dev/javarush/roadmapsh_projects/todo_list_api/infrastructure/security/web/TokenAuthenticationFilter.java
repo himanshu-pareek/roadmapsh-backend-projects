@@ -1,6 +1,7 @@
-package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security;
+package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.web;
 
-import dev.javarush.roadmapsh_projects.todo_list_api.auth.AuthTokenRepository;
+import dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.AuthTokenRepository;
+import dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.TokenAuthenticationToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

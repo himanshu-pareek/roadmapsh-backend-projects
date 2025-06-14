@@ -1,7 +1,7 @@
-package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security;
+package dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.db;
 
-import dev.javarush.roadmapsh_projects.todo_list_api.auth.AuthToken;
-import dev.javarush.roadmapsh_projects.todo_list_api.auth.AuthTokenRepository;
+import dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.AuthToken;
+import dev.javarush.roadmapsh_projects.todo_list_api.infrastructure.security.AuthTokenRepository;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 
