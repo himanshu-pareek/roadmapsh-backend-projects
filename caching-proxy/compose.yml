@@ -3,4 +3,4 @@ services:
     image: 'redis:7.4.1'
     container_name: 'caching-proxy-redis'
     ports:
-      - '6379:6379'
+      - ${REDIS_PORT}:6379
