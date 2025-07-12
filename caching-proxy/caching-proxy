@@ -2,7 +2,7 @@
 
 set -e
 
-function show_usage {
+function usage {
     echo "To run the server on port <port> to act as a proxy server for <origin>:"
     echo "$ caching-proxy --port <port> --origin <origin>"
     echo ""
@@ -19,6 +19,8 @@ function start_redis_server {
     docker compose down
     REDIS_PORT=${redisPort} docker compose up -d
     echo "📦 Redis started on port ${redisPort}"
+    mkdir -p .config
+    echo "${redisPort}" > .config/redis.port
 }
 
 function start_java_application {
@@ -27,6 +29,8 @@ function start_java_application {
     origin=$3
     cacheDurationSeconds=$4
 
+    mkdir -p .config
+    echo "${port}" > .config/server.port
     echo ""
     echo "Starting Java Application on port ${port} and origin ${origin}"
     echo ""
@@ -50,6 +54,65 @@ function start_server {
     start_java_application ${port} ${redisPort} ${origin} ${cacheDurationSeconds}
 }
 
-start_server 6379 https://jsonplaceholder.typicode.com 60
+function clear_redis_cache {
+    echo "🧹 Clearing cache from redis database..."
+    docker exec caching-proxy-redis redis-cli FLUSHALL
+    echo "✅ Done"
+}
 
+PORT=""
+ORIGIN=""
+CLEAR_CACHE=0
+
+START_SERVER=0
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -p | --port)
+            ((START_SERVER=START_SERVER+1))
+            PORT="$2"
+            shift
+            shift
+            ;;
+        -o | --origin)
+            ((START_SERVER=START_SERVER+1))
+            ORIGIN="$2"
+            shift
+            shift
+            ;;
+        -c | --clear-cache)
+            CLEAR_CACHE=1
+            shift
+            ;;
+        -h | --help)
+            usage
+            exit 0
+            ;;
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+if [ "${START_SERVER}" = 2 ]; then
+    if [ "${CLEAR_CACHE}" = 1 ]; then
+        usage
+        exit 1
+    fi
+
+    start_server ${PORT} ${ORIGIN} 3600
+
+    exit 0
+fi
+
+if [ "${CLEAR_CACHE}" = 1 ]; then
+
+    clear_redis_cache
+
+    exit 0
+fi
+
+usage
+exit 1
 
