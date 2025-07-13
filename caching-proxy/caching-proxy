@@ -3,13 +3,18 @@
 set -e
 
 function usage {
+    echo ""
+    echo "------- Caching Proxy Service -------"
+    echo ""
     echo "To run the server on port <port> to act as a proxy server for <origin>:"
-    echo "$ caching-proxy --port <port> --origin <origin>"
+    echo "$ caching-proxy --port <port> --origin <origin> [ --ttl <ttl for response in seconds> ]"
     echo ""
     echo "Example - caching-proxy --port 8080 --origin https://jsonplaceholder.typicode.com"
     echo ""
     echo "To clear the cache of proxy server:"
     echo "$ caching-proxy --clear-cache"
+    echo ""
+    echo "-------------------------------------"
     echo ""
 }
 
@@ -32,7 +37,7 @@ function start_java_application {
     mkdir -p .config
     echo "${port}" > .config/server.port
     echo ""
-    echo "Starting Java Application on port ${port} and origin ${origin}"
+    echo "☕ Starting Java Application on port ${port} and origin ${origin}"
     echo ""
     SERVER_PORT=${port} REDIS_HOST=localhost REDIS_PORT=${redisPort} PROXY_UPSTREAM_SERVER_HOST=${origin} CACHE_DURATION_SECONDS=${cacheDurationSeconds} ./gradlew bootRun
     echo ""
@@ -63,6 +68,7 @@ function clear_redis_cache {
 PORT=""
 ORIGIN=""
 CLEAR_CACHE=0
+CDS=3600
 
 START_SERVER=0
 
@@ -77,6 +83,11 @@ while [[ $# -gt 0 ]]; do
         -o | --origin)
             ((START_SERVER=START_SERVER+1))
             ORIGIN="$2"
+            shift
+            shift
+            ;;
+        --ttl)
+            CDS="$2"
             shift
             shift
             ;;
@@ -101,7 +112,7 @@ if [ "${START_SERVER}" = 2 ]; then
         exit 1
     fi
 
-    start_server ${PORT} ${ORIGIN} 3600
+    start_server ${PORT} ${ORIGIN} ${CDS}
 
     exit 0
 fi
