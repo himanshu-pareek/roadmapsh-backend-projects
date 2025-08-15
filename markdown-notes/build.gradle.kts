@@ -1,11 +1,12 @@
 plugins {
 	java
-	id("org.springframework.boot") version "3.5.3"
+	id("org.springframework.boot") version "3.5.4"
 	id("io.spring.dependency-management") version "1.1.7"
 }
 
-group = "dev.javarush.roadmapsh-projects"
+group = "dev.javarush.roadmap-projects"
 version = "0.0.1-SNAPSHOT"
+description = "Demo project for Spring Boot"
 
 java {
 	toolchain {

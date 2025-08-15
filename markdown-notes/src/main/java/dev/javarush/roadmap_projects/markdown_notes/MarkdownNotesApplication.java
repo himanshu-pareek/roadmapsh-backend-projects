@@ -1,4 +1,4 @@
-package dev.javarush.roadmapsh_projects.markdown_notes;
+package dev.javarush.roadmap_projects.markdown_notes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
