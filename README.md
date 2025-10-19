@@ -79,4 +79,11 @@ Please find below list of projects
 
     Submission URL - https://roadmap.sh/projects/caching-server/solutions?u=6479b105c4ec366ad5b756da
 
+11. Markdown Note-taking App
+
+    Project URL - https://roadmap.sh/projects/markdown-note-taking-app
+
+    GitHub URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/markdown-notes
+
+    Submission URL - 
 

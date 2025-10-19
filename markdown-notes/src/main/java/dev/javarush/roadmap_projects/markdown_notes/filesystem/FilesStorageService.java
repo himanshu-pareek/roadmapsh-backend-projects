@@ -15,6 +15,13 @@ public class FilesStorageService implements StorageService {
 
   public FilesStorageService(String rootPath) {
     this.rootLocation = Paths.get(rootPath).toAbsolutePath();
+    if (!Files.exists(this.rootLocation)) {
+      try {
+        Files.createDirectories(this.rootLocation);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
   @Override
