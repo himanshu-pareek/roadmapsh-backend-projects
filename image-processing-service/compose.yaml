@@ -1,0 +1,13 @@
+services:
+  rabbitmq:
+    image: 'rabbitmq:4.2.0-management'
+    environment:
+      - 'RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}'
+      - 'RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}'
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+  redis:
+    image: 'redis:latest'
+    ports:
+      - '6379:6379'
