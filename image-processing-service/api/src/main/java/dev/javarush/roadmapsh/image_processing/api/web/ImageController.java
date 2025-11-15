@@ -38,10 +38,11 @@ class ImageController {
       @RequestParam("file") MultipartFile file,
       Authentication authentication
   ) {
-    try {
+    try (var is = file.getInputStream()) {
       var image = imageUploadFlow.uploadImage(
           title,
-          file.getInputStream(),
+          is,
+          file.getSize(),
           authentication.getName()
       );
       return ImageResponse.fromImage(image);

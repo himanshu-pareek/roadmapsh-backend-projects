@@ -1,5 +1,6 @@
 package dev.javarush.roadmapsh.image_processing.filesystem;
 
+import dev.javarush.roadmapsh.image_processing.core.storage.FileObject;
 import dev.javarush.roadmapsh.image_processing.core.storage.StorageException;
 import dev.javarush.roadmapsh.image_processing.core.storage.StorageService;
 import java.io.IOException;
@@ -25,12 +26,12 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
-  public String store(InputStream content) {
+  public String store(FileObject fileObject) {
     String objectId = generateId();
     Path fileLocation = getFileLocation(objectId);
     System.out.println("Storing file at " + fileLocation);
     try {
-      Files.copy(content, fileLocation, StandardCopyOption.REPLACE_EXISTING);
+      Files.copy(fileObject.content(), fileLocation, StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException e) {
       throw new StorageException(e);
     }
@@ -38,11 +39,13 @@ public class FileSystemStorageService implements StorageService {
   }
 
   @Override
-  public InputStream retrieve(String objectId) {
+  public FileObject retrieve(String objectId) {
     Path fileLocation = getFileLocation(objectId);
     System.out.println("Getting file from " + fileLocation);
     try {
-      return Files.newInputStream(fileLocation);
+      long size = Files.size(fileLocation);
+      InputStream content = Files.newInputStream(fileLocation);
+      return new FileObject(content, size);
     } catch (IOException e) {
       throw new StorageException(e);
     }

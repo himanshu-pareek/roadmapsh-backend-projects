@@ -21,3 +21,5 @@ include("amqp:consumer")
 
 // Storage implementation
 include("filesystem")
+
+include("aws")

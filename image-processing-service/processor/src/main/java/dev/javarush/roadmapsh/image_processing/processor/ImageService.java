@@ -10,6 +10,7 @@ import dev.javarush.roadmapsh.image_processing.core.event.TransformationRequestE
 import dev.javarush.roadmapsh.image_processing.core.processor.ImageMetadataService;
 import dev.javarush.roadmapsh.image_processing.core.processor.ImageTransformer;
 import dev.javarush.roadmapsh.image_processing.core.repository.ImageRepository;
+import dev.javarush.roadmapsh.image_processing.core.storage.FileObject;
 import dev.javarush.roadmapsh.image_processing.core.storage.StorageService;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,11 +48,9 @@ public class ImageService implements EventConsumer {
     Image image = this.repository.findById(imageId.toString());
     logger.info("Image retrieved from database: {}", image);
     String objectRef = image.getObjectRef();
-    try (InputStream imageStream = this.storageService.retrieve(objectRef)) {
-      ImageMetadata imageMetadata = this.metadataService.computeMetadata(imageStream);
+    try (FileObject file = this.storageService.retrieve(objectRef)) {
+      ImageMetadata imageMetadata = this.metadataService.computeMetadata(file);
       image.setMetadata(imageMetadata);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
     this.repository.update(image);
   }
@@ -82,8 +81,8 @@ public class ImageService implements EventConsumer {
     transformation.setStatus(TransformationStatus.IN_PROGRESS);
     this.repository.update(image);
     try (
-        InputStream imageStream = this.storageService.retrieve(image.getObjectRef());
-        InputStream transformed = this.imageTransformer.transformImage(imageStream, transformation)
+        FileObject file = this.storageService.retrieve(image.getObjectRef());
+        FileObject transformed = this.imageTransformer.transformImage(file, transformation)
     ) {
       String objectRef = this.storageService.store(transformed);
       transformation.setObjectRef(objectRef);

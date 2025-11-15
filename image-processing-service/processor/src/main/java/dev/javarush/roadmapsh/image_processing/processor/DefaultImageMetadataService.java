@@ -3,6 +3,7 @@ package dev.javarush.roadmapsh.image_processing.processor;
 import dev.javarush.roadmapsh.image_processing.core.ImageFormat;
 import dev.javarush.roadmapsh.image_processing.core.ImageMetadata;
 import dev.javarush.roadmapsh.image_processing.core.processor.ImageMetadataService;
+import dev.javarush.roadmapsh.image_processing.core.storage.FileObject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,10 +14,10 @@ import javax.imageio.stream.ImageInputStream;
 
 public class DefaultImageMetadataService implements ImageMetadataService {
   @Override
-  public ImageMetadata computeMetadata(InputStream imageStream) {
+  public ImageMetadata computeMetadata(FileObject file) {
     byte[] imageBytes = null;
     try {
-      imageBytes = imageStream.readAllBytes();
+      imageBytes = file.content().readAllBytes();
       long size = imageBytes.length;
 
       try (ByteArrayInputStream baisForFormat = new ByteArrayInputStream(imageBytes);

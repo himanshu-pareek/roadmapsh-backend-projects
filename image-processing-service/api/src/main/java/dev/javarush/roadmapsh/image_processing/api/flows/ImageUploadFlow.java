@@ -4,6 +4,7 @@ import dev.javarush.roadmapsh.image_processing.core.event.EventPublisher;
 import dev.javarush.roadmapsh.image_processing.core.Image;
 import dev.javarush.roadmapsh.image_processing.core.repository.ImageRepository;
 import dev.javarush.roadmapsh.image_processing.core.event.ImageUploadEvent;
+import dev.javarush.roadmapsh.image_processing.core.storage.FileObject;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -24,8 +25,8 @@ public class ImageUploadFlow {
     this.eventPublisher = eventPublisher;
   }
 
-  public Image uploadImage(String title, InputStream inputStream, String username) {
-    String objectRef = storageService.store(inputStream);
+  public Image uploadImage(String title, InputStream content, long contentLength, String username) {
+    String objectRef = storageService.store(new FileObject(content, contentLength));
     String newId = this.imageRepository.getNewId();
     LocalDateTime now = LocalDateTime.now();
     Image image = new Image(

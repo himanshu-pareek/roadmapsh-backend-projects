@@ -7,6 +7,7 @@ dependencies {
     implementation(project(":mongodb"))
     implementation(project(":amqp:producer"))
     implementation(project(":filesystem"))
+    implementation(project(":aws"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
 }
