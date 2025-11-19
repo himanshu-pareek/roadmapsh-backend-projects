@@ -27,8 +27,8 @@ public class ProjectConfig {
   }
 
   @Bean
-  ImageGetFlow imageGetFlow(ImageRepository imageRepository) {
-    return new ImageGetFlow(imageRepository);
+  ImageGetFlow imageGetFlow(ImageRepository imageRepository, StorageService storageService) {
+    return new ImageGetFlow(imageRepository, storageService);
   }
 
   @Bean

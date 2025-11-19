@@ -8,6 +8,7 @@ dependencies {
     implementation(project(":mongodb"))
     implementation(project(":amqp:consumer"))
     implementation(project(":opencv"))
+    implementation(project(":aws"))
     // https://mvnrepository.com/artifact/org.springframework/spring-context
     implementation("org.springframework.boot:spring-boot-starter")
 }

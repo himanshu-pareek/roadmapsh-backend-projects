@@ -9,6 +9,7 @@ import dev.javarush.roadmapsh.image_processing.processor.DefaultImageMetadataSer
 import dev.javarush.roadmapsh.image_processing.core.processor.ImageMetadataService;
 import dev.javarush.roadmapsh.image_processing.processor.ImageService;
 import dev.javarush.roadmapsh.image_processing.core.processor.ImageTransformer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +17,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = {
     "dev.javarush.roadmapsh.image_processing.mongodb",
-    "dev.javarush.roadmapsh.image_processing.amqp.consumer"
+    "dev.javarush.roadmapsh.image_processing.amqp.consumer",
+    "dev.javarush.roadmapsh.image_processing.aws.s3"
 })
 public class ProjectConfig {
   @Bean
+  @ConditionalOnMissingBean
   StorageService storageService() {
     return new FileSystemStorageService("/Users/himanshu/Projects/roadmapsh-backend-projects/image-processing-service/oss");
   }

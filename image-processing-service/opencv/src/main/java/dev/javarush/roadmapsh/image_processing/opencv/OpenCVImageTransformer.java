@@ -4,6 +4,7 @@ import dev.javarush.roadmapsh.image_processing.core.ImageCropTransformation;
 import dev.javarush.roadmapsh.image_processing.core.ImageResizeTransformation;
 import dev.javarush.roadmapsh.image_processing.core.ImageTransformation;
 import dev.javarush.roadmapsh.image_processing.core.processor.ImageTransformer;
+import dev.javarush.roadmapsh.image_processing.core.storage.FileObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -25,7 +26,7 @@ public class OpenCVImageTransformer implements ImageTransformer {
   }
 
   @Override
-  public InputStream transformImage(InputStream imageStream, ImageTransformation transformation)
+  public FileObject transformImage(FileObject fileObject, ImageTransformation transformation)
       throws IOException {
     // 0. Read image in OpenCV Matrix form
     Path file = Files.createTempFile(
@@ -35,7 +36,7 @@ public class OpenCVImageTransformer implements ImageTransformer {
             PosixFilePermissions.fromString("rw-------")
         )
     );
-    Files.copy(imageStream, file, StandardCopyOption.REPLACE_EXISTING);
+    Files.copy(fileObject.content(), file, StandardCopyOption.REPLACE_EXISTING);
     Mat image = Imgcodecs.imread(file.toAbsolutePath().toString());
 
     // 1. Crop
@@ -85,6 +86,6 @@ public class OpenCVImageTransformer implements ImageTransformer {
 
     // FINAL - Create input stream of the file
     Imgcodecs.imwrite(file.toAbsolutePath().toString(), image);
-    return Files.newInputStream(file);
+    return new FileObject(Files.newInputStream(file), file.toFile().length());
   }
 }

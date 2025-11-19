@@ -8,6 +8,7 @@ public record FileObject(InputStream content, long size) implements AutoCloseabl
     try {
       this.content.close();
     } catch (Exception e) {
+      System.out.println("Exception in closing: " + e.getMessage());
       // ignore
     }
   }

@@ -7,6 +7,14 @@ import dev.javarush.roadmapsh.image_processing.api.flows.ImageGetFlow;
 import dev.javarush.roadmapsh.image_processing.api.flows.ImageTransformFlow;
 import dev.javarush.roadmapsh.image_processing.api.flows.ImageUploadFlow;
 import dev.javarush.roadmapsh.image_processing.core.ImageTransformation;
+import dev.javarush.roadmapsh.image_processing.core.storage.FileObject;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,5 +76,34 @@ class ImageController {
         transformation,
         authentication.getName()
     );
+  }
+
+  @GetMapping("{imageId}/download")
+  ResponseEntity<Resource> downloadImage(
+      @PathVariable("imageId") String imageId,
+      @RequestParam(value = "transformationId", required = false) String transformationId,
+      HttpServletResponse response
+  ) {
+    String fileName = imageId;
+    if (transformationId != null) {
+      fileName = transformationId;
+    }
+    try (
+        FileObject file = this.imageGetFlow.downloadImage(imageId, transformationId)
+    ) {
+      return ResponseEntity
+          .ok()
+          .header(
+              HttpHeaders.CONTENT_DISPOSITION,
+              "attachment; filename=\"" + fileName + ".png\""
+          )
+          .header(
+              HttpHeaders.CONTENT_LENGTH,
+              String.valueOf(file.size())
+          )
+          .body(new ByteArrayResource(file.content().readAllBytes()));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
