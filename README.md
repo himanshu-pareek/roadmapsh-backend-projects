@@ -87,3 +87,12 @@ Please find below list of projects
 
     Submission URL - https://roadmap.sh/projects/markdown-note-taking-app/solutions?u=6479b105c4ec366ad5b756da
 
+12. Image Processing Service
+
+    Project URL - https://roadmap.sh/projects/image-processing-service
+
+    GitHub URL - https://github.com/himanshu-pareek/roadmapsh-backend-projects/tree/main/image-processing-service
+
+    Submission URL - 
+
+
