@@ -8,6 +8,7 @@ dependencies {
     implementation(project(":amqp:producer"))
     implementation(project(":filesystem"))
     implementation(project(":aws"))
+    implementation(project(":redis"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
 }

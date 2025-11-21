@@ -23,3 +23,4 @@ include("amqp:consumer")
 include("filesystem")
 
 include("aws")
+include("redis")

@@ -1,5 +1,7 @@
 package dev.javarush.roadmapsh.image_processing.api.security;
 
+import dev.javarush.roadmapsh.image_processing.core.rate_limiting.RateLimiter;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,20 +13,37 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import org.springframework.security.web.session.DisableEncodeUrlFilter;
 
 @Configuration
 public class SecurityConfig {
 
   @Bean
-  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  SecurityFilterChain securityFilterChain(
+      HttpSecurity http,
+      @Qualifier("global") RateLimiter globalRateLimiter,
+      @Qualifier("user") RateLimiter userRateLimiter
+  ) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable);
     http.httpBasic(Customizer.withDefaults());
     http.authorizeHttpRequests(
         authz -> authz
             .anyRequest().authenticated()
+    );
+
+    // Global rate limiter (before anything happens on the server)
+    http.addFilterBefore(
+        new RateLimitingFilter(globalRateLimiter, null),
+        DisableEncodeUrlFilter.class
+    );
+
+    // User rate limiter (After authentication completes)
+    http.addFilterAfter(
+        new RateLimitingFilter(null, userRateLimiter),
+        AnonymousAuthenticationFilter.class
     );
     return http.build();
   }
